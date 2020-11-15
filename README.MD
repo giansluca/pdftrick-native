@@ -1,4 +1,4 @@
-Mupdf 1.7a compiling:
+-Mupdf 1.7a compiling:
 
 Mac:
 install xqartz : brew cask install xquartz

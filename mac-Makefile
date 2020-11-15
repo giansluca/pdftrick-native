@@ -1,0 +1,63 @@
+CC=clang
+CFLAGS=-c -m64 -Wall -O2 -fPIC -I headers/
+LFLAGS=-Wl,-no_compact_unwind -dynamiclib -fPIC -lm
+
+release: setup-release \
+		compile-release-pdftrick_native \
+		compile-release-page_render \
+		link-release
+
+setup-release: 
+				rm -r dist/mac/release 
+				mkdir dist/mac/release
+
+compile-release-pdftrick_native:
+				$(CC) $(CFLAGS) -o dist/mac/release/pdftrick_native.o pdftrick_native.c
+
+compile-release-page_render:
+				$(CC) $(CFLAGS) -o dist/mac/release/page_render.o page_render.c
+
+link-release:
+				$(CC) $(LFLAGS) \
+				dist/mac/release/pdftrick_native.o \
+				dist/mac/release/page_render.o \
+				libs/mac/libmupdf.a \
+				libs/mac/libfreetype.a \
+				libs/mac/libjbig2dec.a \
+				libs/mac/libjpeg.a \
+				libs/mac/libopenjpeg.a \
+				libs/mac/libz.a \
+				-o dist/mac/release/libpdftrick_native_1.7a_64.jnilib \
+				-install_name libpdftrick_native_1.7a_64.jnilib
+
+debug: setup-debug \
+		compile-debug-pdftrick_native \
+		compile-debug-page_render \
+		link-debug
+
+setup-debug:
+				rm -r dist/mac/debug
+				mkdir dist/mac/debug
+
+compile-debug-pdftrick_native:
+				$(CC) $(CFLAGS) -g -o dist/mac/debug/pdftrick_native.o pdftrick_native.c
+
+compile-debug-page_render:
+				$(CC) $(CFLAGS) -g -o dist/mac/debug/page_render.o page_render.c
+
+link-debug:
+				$(CC) $(LFLAGS) \
+				dist/mac/debug/pdftrick_native.o \
+				dist/mac/debug/page_render.o \
+				libs/mac/libmupdf.a \
+				libs/mac/libfreetype.a \
+				libs/mac/libjbig2dec.a \
+				libs/mac/libjpeg.a \
+				libs/mac/libopenjpeg.a \
+				libs/mac/libz.a \
+				-o dist/mac/debug/libpdftrick_native_1.7a_64.jnilib \
+				-install_name libpdftrick_native_1.7a_64.jnilib
+
+
+
+

@@ -4,4 +4,4 @@ else
   make -f .\win-Makefile release
 fi
 
-echo "DONE"
+echo "Build Done"

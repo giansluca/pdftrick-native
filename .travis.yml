@@ -3,4 +3,11 @@ os:
   - windows
   - osx
 
-script: ./script.sh
+jobs:
+  include:
+    - os: osx
+      osx_image: xcode12
+
+script:
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then make -f mac-Makefile release     ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then make -f win-Makefile release ; fi

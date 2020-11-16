@@ -1,20 +1,22 @@
--Mupdf 1.7a compiling:
+--Mupdf 1.7a build--
 
 Mac:
-install xqartz : brew cask install xquartz
-make CC=clang build=(debug/release)
+    install xqartz: brew cask install xquartz
+    make CC=clang build=(debug/release)
 
--headers to include:
-jdk-home/Contents/Home/include
-jdk-home/Contents/Home/include/darwin
-mupdf-1.7a-source/include
-
----
+    -headers to include:
+        jdk-home/Contents/Home/include
+        jdk-home/Contents/Home/include/darwin
+        mupdf-1.7a-source/include
 
 Win:
-make CC=gcc build=(debug/release)
+    make CC=gcc build=(debug/release)
 
--headers to include:
-jdk-home/include
-jdk-home/include/win32
-mupdf-1.7a-source/include
+    -headers to include:
+        jdk-home/include
+        jdk-home/include/win32
+        mupdf-1.7a-source/include
+
+--PdfTick Native build--
+    make -f .\win-Makefile release
+    make -f mac-Makefile release

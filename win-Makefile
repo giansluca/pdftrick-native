@@ -8,8 +8,8 @@ release: setup-release \
 		link-release
 
 setup-release: 
-				rm -r dist/win/release 
-				mkdir dist/win/release
+				rm -rf dist/win/release 
+				mkdir -p dist/win/release
 
 compile-release-pdftrick_native:
 				$(CC) $(CFLAGS) -o dist/win/release/pdftrick_native.o pdftrick_native.c
@@ -35,8 +35,8 @@ debug: setup-debug \
 		link-debug
 
 setup-debug:
-				rm -r dist/win/debug
-				mkdir dist/win/debug
+				rm -rf dist/win/debug
+				mkdir -p dist/win/debug
 
 compile-debug-pdftrick_native:
 				$(CC) $(CFLAGS) -g -o dist/win/debug/pdftrick_native.o pdftrick_native.c

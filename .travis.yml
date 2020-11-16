@@ -1,0 +1,10 @@
+branches:
+  only:
+    - master
+language: c
+os:
+  - windows
+  - osx
+deploy:
+  provider: script
+  script: bash ./deploy.sh

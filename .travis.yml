@@ -1,0 +1,17 @@
+branches:
+  only:
+    - master
+language: c
+jobs:
+  include:
+    - os: osx
+      osx_image: xcode12.2
+      install: brew install esolitos/ipa/sshpass
+    - os: windows
+      install: choco install make
+script:
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then make -f mac-Makefile release     ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then make -f win-Makefile release ; fi
+deploy:
+  provider: script
+  script: bash ./deploy.sh

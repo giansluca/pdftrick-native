@@ -8,8 +8,8 @@ release: setup-release \
 		link-release
 
 setup-release: 
-				rm -r dist/mac/release 
-				mkdir dist/mac/release
+				rm -rf dist/mac/release 
+				mkdir -p dist/mac/release
 
 compile-release-pdftrick_native:
 				$(CC) $(CFLAGS) -o dist/mac/release/pdftrick_native.o pdftrick_native.c
@@ -36,8 +36,8 @@ debug: setup-debug \
 		link-debug
 
 setup-debug:
-				rm -r dist/mac/debug
-				mkdir dist/mac/debug
+				rm -rf dist/mac/debug
+				mkdir -p dist/mac/debug
 
 compile-debug-pdftrick_native:
 				$(CC) $(CFLAGS) -g -o dist/mac/debug/pdftrick_native.o pdftrick_native.c

@@ -5,7 +5,7 @@ jobs:
     - os: osx
       osx_image: xcode12.2
     - os: windows
-      script: choco install make
+      install: choco install make
 
 script:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then make -f mac-Makefile release     ; fi

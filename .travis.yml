@@ -10,10 +10,11 @@ jobs:
         - choco install make
         - choco install putty
 script:
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then make -f mac-Makefile release && ls     ; fi
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then make -f win-Makefile release       ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then make -f mac-Makefile release &&    ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then make -f win-Makefile release   ; fi
 deploy:
   provider: script
+  skip_cleanup: true
   script: bash ./deploy.sh
   on:
     branch: develop

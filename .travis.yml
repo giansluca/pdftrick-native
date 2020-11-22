@@ -1,4 +1,6 @@
-sudo: required
+branches:
+  only:
+    - master
 language: c
 jobs:
   include:
@@ -17,4 +19,4 @@ deploy:
   skip_cleanup: true
   script: bash ./deploy.sh
   on:
-    branch: develop
+    tags: true

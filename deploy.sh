@@ -1,7 +1,3 @@
-git checkout $TRAVIS_BRANCH
-git tag v$GIT_TAG_VERSION -a -m "Tagging version v$GIT_TAG_VERSION"
-git push origin $TRAVIS_BRANCH --tags 2>&1
-
 if [ $TRAVIS_OS_NAME = 'osx' ]; then
   export SSHPASS=$DEPLOY_PASS
   sshpass -e scp \

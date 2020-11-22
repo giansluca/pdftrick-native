@@ -15,14 +15,9 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then make -f mac-Makefile release       ; fi
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then make -f win-Makefile release   ; fi
 
-after_success:
-  - export LAST_GIT_TAG_VERSION=$(git describe --abbrev=0 --tags) && export LAST_GIT_TAG_VERSION=${LAST_GIT_TAG_VERSION:1}
-  - export GIT_TAG_VERSION=$((LAST_GIT_TAG_VERSION+1))
-
 deploy:
   on:
-    branch: master
-    condition: -z $(git tag --points-at $TRAVIS_COMMIT)
+    tags: true
   provider: script
   skip_cleanup: true
   script: bash ./deploy.sh

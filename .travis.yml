@@ -16,8 +16,17 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then make -f win-Makefile release   ; fi
 
 deploy:
+  #provider: script
+  #skip_cleanup: true
+  #script: bash ./deploy.sh
+  #on:
+    #tags: true
+
+  provider: releases
+  api_key: "GITHUB OAUTH TOKEN"
+  file: 
+    - "dist/mac/release/pdftrick-native.*"
+    - "dist/win/release/pdftrick-native.*"
+  skip_cleanup: true
   on:
     tags: true
-  provider: script
-  skip_cleanup: true
-  script: bash ./deploy.sh

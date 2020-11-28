@@ -2,14 +2,14 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   export SSHPASS=$DEPLOY_PASS
   sshpass -e scp \
   -o stricthostkeychecking=no \
-  dist/mac/release/libpdftrick_native_1.7a_64.jnilib \
+  dist/mac/release/pdftrick-native.* \
   $DEPLOY_USER@$DEPLOY_HOST:/home/gians/test-deploy
 else
   pscp \
   -pw $DEPLOY_PASS \
   -hostkey $SERVER_FINGERPRINT \
   -P 22 \
-  dist/win/release/libpdftrick_native_1.7a_64.dll \
+  dist/win/release/pdftrick-native.* \
   $DEPLOY_USER@$DEPLOY_HOST:/home/gians/test-deploy
 fi
 

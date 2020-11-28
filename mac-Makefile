@@ -1,6 +1,7 @@
 CC=clang
 CFLAGS=-c -m64 -Wall -O2 -fPIC -I headers/
 LFLAGS=-Wl,-no_compact_unwind -dynamiclib -fPIC -lm
+VERSION=1.0.1
 
 release: setup-release \
 		compile-release-pdftrick_native \
@@ -27,8 +28,8 @@ link-release:
 				libs/mac/libjpeg.a \
 				libs/mac/libopenjpeg.a \
 				libs/mac/libz.a \
-				-o dist/mac/release/libpdftrick_native_1.7a_64.jnilib \
-				-install_name libpdftrick_native_1.7a_64.jnilib
+				-o dist/mac/release/pdftrick-native-$(VERSION).jnilib \
+				-install_name pdftrick-native-$(VERSION).jnilib
 
 debug: setup-debug \
 		compile-debug-pdftrick_native \
@@ -55,8 +56,8 @@ link-debug:
 				libs/mac/libjpeg.a \
 				libs/mac/libopenjpeg.a \
 				libs/mac/libz.a \
-				-o dist/mac/debug/libpdftrick_native_1.7a_64.jnilib \
-				-install_name libpdftrick_native_1.7a_64.jnilib
+				-o dist/mac/debug/pdftrick-native-$(VERSION).jnilib \
+				-install_name pdftrick-native-$(VERSION).jnilib
 
 
 

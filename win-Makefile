@@ -28,7 +28,7 @@ link-release:
 				libs/win/libjpeg.a \
 				libs/win/libopenjpeg.a \
 				libs/win/libz.a \
-				-o dist/win/release/pdftrick-native-$(VERSION).dll
+				-o dist/win/release/pdftrick-native_$(VERSION).dll
 
 debug: setup-debug \
 		compile-debug-pdftrick_native \
@@ -55,4 +55,4 @@ link-debug:
 				libs/win/libjpeg.a \
 				libs/win/libopenjpeg.a \
 				libs/win/libz.a \
-				-o dist/win/debug/pdftrick-native-$(VERSION).dll
+				-o dist/win/debug/pdftrick-native_$(VERSION).dll

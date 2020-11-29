@@ -28,8 +28,8 @@ link-release:
 				libs/mac/libjpeg.a \
 				libs/mac/libopenjpeg.a \
 				libs/mac/libz.a \
-				-o dist/mac/release/pdftrick-native-$(VERSION).jnilib \
-				-install_name pdftrick-native-$(VERSION).jnilib
+				-o dist/mac/release/pdftrick-native_$(VERSION).jnilib \
+				-install_name pdftrick-native_$(VERSION).jnilib
 
 debug: setup-debug \
 		compile-debug-pdftrick_native \
@@ -56,8 +56,8 @@ link-debug:
 				libs/mac/libjpeg.a \
 				libs/mac/libopenjpeg.a \
 				libs/mac/libz.a \
-				-o dist/mac/debug/pdftrick-native-$(VERSION).jnilib \
-				-install_name pdftrick-native-$(VERSION).jnilib
+				-o dist/mac/debug/pdftrick-native_$(VERSION).jnilib \
+				-install_name pdftrick-native_$(VERSION).jnilib
 
 
 

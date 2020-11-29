@@ -19,16 +19,16 @@ before_deploy:
   - export MAC_FILE_PATH=dist/mac/release/pdftrick-native_${TRAVIS_TAG:1}.jnilib
   - export WIN_FILE_PATH=dist/win/release/pdftrick-native_${TRAVIS_TAG:1}.dll
 deploy:
-  #provider: script
-  #skip_cleanup: true
-  #script: bash ./deploy.sh
-  #on:
-    #tags: true
-  provider: releases
-  api_key: "$GITHUB_TOKEN"
-  file: 
-    - ${MAC_FILE_PATH}
-    - ${WIN_FILE_PATH}
-  skip_cleanup: true
-  on:
-    tags: true
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy.sh
+    on:
+      tags: true
+  - provider: releases
+    api_key: "$GITHUB_TOKEN"
+    file:
+      - $MAC_FILE_PATH
+      - $WIN_FILE_PATH
+    skip_cleanup: true
+    on:
+      tags: true

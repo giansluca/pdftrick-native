@@ -21,12 +21,11 @@ deploy:
   #script: bash ./deploy.sh
   #on:
     #tags: true
-
   provider: releases
   api_key: "$GITHUB_TOKEN"
   file: 
-    - "dist/mac/release/pdftrick-native.*"
-    - "dist/win/release/pdftrick-native.*"
+    - "dist/mac/release/pdftrick-native-.*"
+    - "dist/win/release/pdftrick-native-.*"
   skip_cleanup: true
   on:
     tags: true

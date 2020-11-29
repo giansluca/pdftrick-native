@@ -23,7 +23,7 @@ deploy:
     #tags: true
 
   provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
+  api_key: "$GITHUB_TOKEN"
   file: 
     - "dist/mac/release/pdftrick-native.*"
     - "dist/win/release/pdftrick-native.*"

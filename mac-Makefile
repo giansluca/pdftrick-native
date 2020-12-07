@@ -4,23 +4,23 @@ LFLAGS=-Wl,-no_compact_unwind -dynamiclib -fPIC -lm
 VERSION=1.0.1
 
 release: setup-release \
-		compile-release-pdftrick_native \
-		compile-release-page_render \
-		link-release
-
+			compile-release-pdftrick_native \
+			compile-release-pdftrick_render \
+			compile-release-page_render \
+			link-release
 setup-release: 
 				rm -rf dist/mac/release 
 				mkdir -p dist/mac/release
-
 compile-release-pdftrick_native:
 				$(CC) $(CFLAGS) -o dist/mac/release/pdftrick_native.o pdftrick_native.c
-
+compile-release-pdftrick_render:
+				$(CC) $(CFLAGS) -o dist/mac/release/pdftrick_render.o pdftrick_render.c
 compile-release-page_render:
 				$(CC) $(CFLAGS) -o dist/mac/release/page_render.o page_render.c
-
 link-release:
 				$(CC) $(LFLAGS) \
 				dist/mac/release/pdftrick_native.o \
+				dist/mac/release/pdftrick_render.o \
 				dist/mac/release/page_render.o \
 				libs/mac/libmupdf.a \
 				libs/mac/libfreetype.a \
@@ -33,22 +33,22 @@ link-release:
 
 debug: setup-debug \
 		compile-debug-pdftrick_native \
+		compile-debug-pdftrick_render \
 		compile-debug-page_render \
 		link-debug
-
 setup-debug:
 				rm -rf dist/mac/debug
 				mkdir -p dist/mac/debug
-
 compile-debug-pdftrick_native:
 				$(CC) $(CFLAGS) -g -o dist/mac/debug/pdftrick_native.o pdftrick_native.c
-
+compile-debug-pdftrick_render:
+				$(CC) $(CFLAGS) -g -o dist/mac/debug/pdftrick_render.o pdftrick_render.c
 compile-debug-page_render:
 				$(CC) $(CFLAGS) -g -o dist/mac/debug/page_render.o page_render.c
-
 link-debug:
 				$(CC) $(LFLAGS) \
 				dist/mac/debug/pdftrick_native.o \
+				dist/mac/debug/pdftrick_render.o \
 				dist/mac/debug/page_render.o \
 				libs/mac/libmupdf.a \
 				libs/mac/libfreetype.a \
@@ -58,6 +58,37 @@ link-debug:
 				libs/mac/libz.a \
 				-o dist/mac/debug/pdftrick-native_$(VERSION).jnilib \
 				-install_name pdftrick-native_$(VERSION).jnilib
+
+test: setup-test \
+		compile-test-main \
+		compile-test-pdftrick_native \
+		compile-test-pdftrick_render \
+		compile-test-page_render \
+		link-test
+setup-test:		
+				rm -rf dist/mac/test
+				mkdir -p dist/mac/test
+compile-test-main:
+				$(CC) $(CFLAGS) -g -o dist/mac/test/main.o test/src/main.c
+compile-test-pdftrick_native:
+				$(CC) $(CFLAGS) -g -o dist/mac/test/pdftrick_native.o pdftrick_native.c
+compile-test-pdftrick_render:
+				$(CC) $(CFLAGS) -g -o dist/mac/test/pdftrick_render.o pdftrick_render.c
+compile-test-page_render:
+				$(CC) $(CFLAGS) -g -o dist/mac/test/page_render.o page_render.c
+link-test:
+				$(CC) \
+				dist/mac/test/main.o \
+				dist/mac/test/pdftrick_native.o \
+				dist/mac/test/pdftrick_render.o \
+				dist/mac/test/page_render.o \
+				libs/mac/libmupdf.a \
+				libs/mac/libfreetype.a \
+				libs/mac/libjbig2dec.a \
+				libs/mac/libjpeg.a \
+				libs/mac/libopenjpeg.a \
+				libs/mac/libz.a \
+				-o dist/mac/test/test.out
 
 
 

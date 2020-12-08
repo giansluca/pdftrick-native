@@ -9,14 +9,16 @@ $(info ************************ Building on $(DETECTED_OS) *********************
 ifeq ($(DETECTED_OS),Windows)
 	CC=gcc
 	LFLAGS=-Wl,--kill-at -D_JNI_IMPLEMENTATION -static-libgcc -shared -lm
-	TARGET_EXTENSION=dll
 	PATH_LIB=libs/win
+	TARGET_LIB_EXTENSION=dll
+	TARGET_EXENSION=exe
 endif	
 ifeq ($(DETECTED_OS),Darwin)
 	CC=clang
 	LFLAGS=-Wl,-no_compact_unwind -dynamiclib -lm
 	PATH_LIB=libs/mac
-	TARGET_EXTENSION=jnilib
+	TARGET_LIB_EXTENSION=jnilib
+	TARGET_EXENSION=out
 endif
 
 CFLAGS=-c -m64 -O2 -fPIC -Wall -I headers/
@@ -48,7 +50,7 @@ link-release:
 				$(PATH_LIB)/libjpeg.a \
 				$(PATH_LIB)/libopenjpeg.a \
 				$(PATH_LIB)/libz.a \
-				-o build/release/pdftrick-native_$(VERSION).$(TARGET_EXTENSION)
+				-o build/release/pdftrick-native_$(VERSION).$(TARGET_LIB_EXTENSION)
 
 # ----------------------------------------------- DEBUG -----------------------------------------------
 debug: setup-debug \
@@ -76,7 +78,7 @@ link-debug:
 				$(PATH_LIB)/libjpeg.a \
 				$(PATH_LIB)/libopenjpeg.a \
 				$(PATH_LIB)/libz.a \
-				-o build/debug/pdftrick-native_$(VERSION).$(TARGET_EXTENSION)
+				-o build/debug/pdftrick-native_$(VERSION).$(TARGET_LIB_EXTENSION)
 
 # ----------------------------------------------- TEST -----------------------------------------------
 test: setup-test \
@@ -108,4 +110,4 @@ link-test:
 				$(PATH_LIB)/libjpeg.a \
 				$(PATH_LIB)/libopenjpeg.a \
 				$(PATH_LIB)/libz.a \
-				-o build/test/test.out
+				-o build/test/test.$(TARGET_EXENSION)

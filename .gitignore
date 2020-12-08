@@ -1,5 +1,6 @@
 .vscode/
 build/
 
-.DS_Store
+*.png
+*.DS_Store
 info.txt

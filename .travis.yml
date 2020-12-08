@@ -18,10 +18,10 @@ script:
   #- if [ "$TRAVIS_OS_NAME" = "windows" ]; then make -f win-Makefile release   ; fi
 
 before_deploy:
-  - export MAC_FILE_PATH=dist/mac/release/pdftrick-native_1.0.1.jnilib
-  - export WIN_FILE_PATH=dist/win/release/pdftrick-native_1.0.1.dll
-  #- export MAC_FILE_PATH=dist/mac/release/pdftrick-native_${TRAVIS_TAG:1}.jnilib
-  #- export WIN_FILE_PATH=dist/win/release/pdftrick-native_${TRAVIS_TAG:1}.dll
+  - export MAC_FILE_PATH=build/release/pdftrick-native_1.0.1.jnilib
+  - export WIN_FILE_PATH=build/release/pdftrick-native_1.0.1.dll
+  #- export MAC_FILE_PATH=build/release/pdftrick-native_${TRAVIS_TAG:1}.jnilib
+  #- export WIN_FILE_PATH=build/release/pdftrick-native_${TRAVIS_TAG:1}.dll
 deploy:
   - provider: script
     skip_cleanup: true

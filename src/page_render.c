@@ -5,7 +5,7 @@ void render(const char *filename, int zoom, int rotation, char *img_path,
 
     fz_context *ctx;
     fz_document *doc;
-    int pagecount;
+    // int pagecount;
     fz_page *page;
     fz_matrix transform;
     fz_rect bounds;
@@ -23,7 +23,7 @@ void render(const char *filename, int zoom, int rotation, char *img_path,
     doc = fz_open_document(ctx, filename);
 
     // Retrieve the number of pages (not used in this example).
-    pagecount = fz_count_pages(ctx, doc);
+    // pagecount = fz_count_pages(ctx, doc);
 
     // Load the page we want. Page numbering starts from zero.
     page = fz_load_page(ctx, doc, pagenumber - 1);

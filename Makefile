@@ -90,6 +90,8 @@ test: setup-test \
 setup-test:		
 				rm -rf build/test
 				mkdir -p build/test
+				rm -rf test/out-files
+				mkdir -p test/out-files
 compile-test-main:
 				$(CC) $(CFLAGS) -g -o build/test/main.o test/main.c
 compile-test-pdftrick_native:

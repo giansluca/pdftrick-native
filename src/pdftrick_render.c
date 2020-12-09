@@ -5,6 +5,7 @@
 
 char *create_lock_file(char *img_path);
 void delete_lock_file(char *file_look_path);
+int get_page_number_digits(int page_number);
 
 void render_thumbail(const char *pdf_file_path, const char *images_folder_path,
                      const int page_number, const int zoom,
@@ -12,6 +13,8 @@ void render_thumbail(const char *pdf_file_path, const char *images_folder_path,
 
     char *image_ = "image_";
     char *extension = ".png";
+
+    // int digits = get_page_number_digits(page_number);
 
     char num[10];
     sprintf(num, "%d", page_number);
@@ -26,6 +29,15 @@ void render_thumbail(const char *pdf_file_path, const char *images_folder_path,
     render(pdf_file_path, zoom, rotation, image_path, page_number);
     delete_lock_file(lock_file);
     free(image_path);
+}
+
+int get_page_number_digits(int page_number) {
+    int digits = 0;
+    while (page_number != 0) {
+        digits++;
+        page_number /= 10;
+    }
+    return digits;
 }
 
 char *create_lock_file(char *image_path) {

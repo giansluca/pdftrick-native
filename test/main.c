@@ -1,7 +1,8 @@
 #include "../src/pdftrick_render.h"
 #include <stdio.h>
 
-int main(int argn, char **argv) {
+int main(void) {
+    /*
     printf("START TESTS\n");
 
     char *pdf_file_path = "../../test/resources/basic-1.pdf";
@@ -15,4 +16,5 @@ int main(int argn, char **argv) {
 
     printf("END TESTS\n");
     return 0;
+    */
 }

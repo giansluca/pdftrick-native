@@ -9,19 +9,22 @@ $(info ************************ Building on $(DETECTED_OS) *********************
 ifeq ($(DETECTED_OS),Windows)
 	CC := gcc
 	LFLAGS := -Wl,--kill-at -D_JNI_IMPLEMENTATION -static-libgcc -shared -lm
-	PATH_LIB := libs/win
+	LIBS := libs/win/libmupdf.a libs/win/libfreetype.a libs/win/libjbig2dec.a \
+			libs/win/libjpeg.a libs/win/libopenjpeg.a libs/win/libz.a
 	TARGET_LIB_EXTENSION := dll
 	TARGET_EXENSION := exe
 endif	
 ifeq ($(DETECTED_OS),Darwin)
 	CC := clang
 	LFLAGS := -Wl,-no_compact_unwind -dynamiclib -lm
-	PATH_LIB := libs/mac
+	LIBS := libs/mac/libmupdf.a libs/mac/libfreetype.a libs/mac/libjbig2dec.a \
+			libs/mac/libjpeg.a libs/mac/libopenjpeg.a libs/mac/libz.a
 	TARGET_LIB_EXTENSION := jnilib
 	TARGET_EXENSION := out
 endif
 
 CFLAGS := -c -m64 -O2 -fPIC -Wall -I headers/
+OBJECTS := $(wildcard build/release/*.o)
 VERSION := 1.0.1
 
 # ----------------------------------------------- RELEASE -----------------------------------------------
@@ -34,18 +37,11 @@ compile-release:
 				$(CC) $(CFLAGS) -o build/release/pdftrick_render.o src/pdftrick_render.c
 				$(CC) $(CFLAGS) -o build/release/page_render.o src/page_render.c
 link-release:
-				$(CC) $(LFLAGS) \
-				$(wildcard build/release/*.o) \
-				libs/win/libmupdf.a \
-				libs/win/libfreetype.a \
-				libs/win/libjbig2dec.a \
-				libs/win/libjpeg.a \
-				libs/win/libopenjpeg.a \
-				libs/win/libz.a \
+				$(CC) $(LFLAGS) $(wildcard build/release/*.o) $(LIBS)
 				-o build/release/pdftrick-native_$(VERSION).$(TARGET_LIB_EXTENSION)
 
 # ----------------------------------------------- TEST -----------------------------------------------
-test: setup-test compile-test link-test-2
+test: setup-test compile-test link-test
 setup-test:		
 				rm -rf build/test
 				mkdir -p build/test
@@ -57,16 +53,6 @@ compile-test:
 				$(CC) $(CFLAGS) -g -o build/test/pdftrick_render.o src/pdftrick_render.c
 				$(CC) $(CFLAGS) -g -o build/test/page_render.o src/page_render.c
 link-test:	
-				$(CC) $(wildcard build/test/*.o) $(wildcard $(PATH_LIB)/*.a) \
-				-o build/test/test.$(TARGET_EXENSION)
-
-link-test-2:
-				$(CC) $(wildcard build/test/*.o) \
-				libs/win/libmupdf.a \
-				libs/win/libfreetype.a \
-				libs/win/libjbig2dec.a \
-				libs/win/libjpeg.a \
-				libs/win/libopenjpeg.a \
-				libs/win/libz.a \
+				$(CC) $(wildcard build/test/*.o) $(LIBS) \
 				-o build/test/test.$(TARGET_EXENSION)
 

@@ -37,7 +37,7 @@ compile-release:
 				$(CC) $(CFLAGS) -o build/release/pdftrick_render.o src/pdftrick_render.c
 				$(CC) $(CFLAGS) -o build/release/page_render.o src/page_render.c
 link-release:
-				$(CC) $(LFLAGS) $(wildcard build/release/*.o) $(LIBS)
+				$(CC) $(LFLAGS) $(wildcard build/release/*.o) $(LIBS) \
 				-o build/release/pdftrick-native_$(VERSION).$(TARGET_LIB_EXTENSION)
 
 # ----------------------------------------------- TEST -----------------------------------------------

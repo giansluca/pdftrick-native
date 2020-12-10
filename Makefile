@@ -35,11 +35,17 @@ compile-release:
 				$(CC) $(CFLAGS) -o build/release/page_render.o src/page_render.c
 link-release:
 				$(CC) $(LFLAGS) \
-				$(wildcard build/release/*.o) $(wildcard $(PATH_LIB)/*.a) \
+				$(wildcard build/release/*.o) \
+				libs/win/libmupdf.a \
+				libs/win/libfreetype.a \
+				libs/win/libjbig2dec.a \
+				libs/win/libjpeg.a \
+				libs/win/libopenjpeg.a \
+				libs/win/libz.a \
 				-o build/release/pdftrick-native_$(VERSION).$(TARGET_LIB_EXTENSION)
 
 # ----------------------------------------------- TEST -----------------------------------------------
-test: setup-test compile-test link-test
+test: setup-test compile-test link-test-2
 setup-test:		
 				rm -rf build/test
 				mkdir -p build/test
@@ -53,3 +59,14 @@ compile-test:
 link-test:	
 				$(CC) $(wildcard build/test/*.o) $(wildcard $(PATH_LIB)/*.a) \
 				-o build/test/test.$(TARGET_EXENSION)
+
+link-test-2:
+				$(CC) $(wildcard build/test/*.o) \
+				libs/win/libmupdf.a \
+				libs/win/libfreetype.a \
+				libs/win/libjbig2dec.a \
+				libs/win/libjpeg.a \
+				libs/win/libopenjpeg.a \
+				libs/win/libz.a \
+				-o build/test/test.$(TARGET_EXENSION)
+

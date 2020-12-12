@@ -14,16 +14,17 @@ void render_thumbail(const char *pdf_file_path, const char *images_folder_path,
     char *image_ = "image_";
     char *extension = ".png";
 
-    // int digits = get_page_number_digits(page_number);
+    int digits = get_page_number_digits(page_number);
 
-    char num[10];
-    sprintf(num, "%d", page_number);
+    char page_number_s[digits + 1];
+    sprintf(page_number_s, "%d", page_number);
 
     char *image_path = malloc((strlen(images_folder_path) + strlen(image_) +
-                               strlen(num) + strlen(extension) + 4) *
+                               strlen(page_number_s) + strlen(extension) + 4) *
                               sizeof(char));
 
-    sprintf(image_path, "%s%s%s%s", images_folder_path, image_, num, extension);
+    sprintf(image_path, "%s%s%s%s", images_folder_path, image_, page_number_s,
+            extension);
 
     char *lock_file = create_lock_file(image_path);
     render(pdf_file_path, zoom, rotation, image_path, page_number);

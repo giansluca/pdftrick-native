@@ -6,6 +6,8 @@ START_TEST(it_should_calculate_digits_of_a_number) {
     ck_assert_int_eq(get_page_number_digits(1), 1);
     ck_assert_int_eq(get_page_number_digits(10), 2);
     ck_assert_int_eq(get_page_number_digits(100), 3);
+    ck_assert_int_eq(get_page_number_digits(1000), 4);
+    ck_assert_int_eq(get_page_number_digits(10000), 5);
 }
 END_TEST
 
@@ -14,8 +16,6 @@ Suite *general_suite(void) {
     TCase *pdftrick_render;
 
     suite = suite_create("General");
-
-    /* pdftrick_render test case */
     pdftrick_render = tcase_create("pdftrick_render");
 
     tcase_add_test(pdftrick_render, it_should_calculate_digits_of_a_number);
@@ -25,9 +25,7 @@ Suite *general_suite(void) {
 }
 
 int main(void) {
-    return 0;
-
-    int number_failed;
+    int number_failed = 0;
     Suite *suite;
     SRunner *suite_runner;
 

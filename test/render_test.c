@@ -15,7 +15,3 @@ void render_integration_test(int page_number) {
     printf("END TESTS\n");
 }
 
-int main(void) {
-    render_integration_test(10);
-    return 0;
-}

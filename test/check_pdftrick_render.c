@@ -1,5 +1,6 @@
 #include "../src/pdftrick_render.h"
 #include <check.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 START_TEST(it_should_calculate_digits_of_a_number) {
@@ -11,6 +12,19 @@ START_TEST(it_should_calculate_digits_of_a_number) {
 }
 END_TEST
 
+START_TEST(it_should_build_image_path) {
+    char *expected = "test_path/image_10.png";
+
+    char *images_folder_path = "test_path/";
+    char *page = "10";
+    char *image_path = build_image_path(images_folder_path, page);
+
+    ck_assert_str_eq(expected, image_path);
+
+    free(image_path);
+}
+END_TEST
+
 Suite *general_suite(void) {
     Suite *suite;
     TCase *pdftrick_render;
@@ -19,6 +33,8 @@ Suite *general_suite(void) {
     pdftrick_render = tcase_create("pdftrick_render");
 
     tcase_add_test(pdftrick_render, it_should_calculate_digits_of_a_number);
+    tcase_add_test(pdftrick_render, it_should_build_image_path);
+
     suite_add_tcase(suite, pdftrick_render);
 
     return suite;

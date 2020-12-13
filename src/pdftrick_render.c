@@ -29,7 +29,7 @@ char *build_image_path(const char *images_folder_path, char *page) {
     char *extension = ".png";
 
     char *image_path = malloc((strlen(images_folder_path) + strlen(prefix) +
-                               strlen(page) + strlen(extension) + 4) *
+                               strlen(page) + strlen(extension) + 1) *
                               sizeof(char));
 
     sprintf(image_path, "%s%s%s%s", images_folder_path, prefix, page,
@@ -50,7 +50,7 @@ int get_page_number_digits(int page_number) {
 char *create_lock_file(char *image_path) {
     char *extension = ".look";
     char *lock_file_path =
-        malloc((strlen(image_path) + strlen(extension) + 4) * sizeof(char));
+        malloc((strlen(image_path) + strlen(extension) + 1) * sizeof(char));
 
     sprintf(lock_file_path, "%s%s", image_path, extension);
 

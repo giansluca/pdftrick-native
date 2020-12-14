@@ -48,9 +48,9 @@ setup-test:
 				rm -rf test/out-files
 				mkdir -p test/out-files
 compile-test:
-				$(CC) $(CFLAGS) -g -o build/test/render_test.o test/render_test.c
+				$(CC) $(CFLAGS) -g -o build/test/test_runner.o test/test_runner.c
+				$(CC) $(CFLAGS) -g -o build/test/check_render_thumbnail.o test/check_render_thumbnail.c
 				$(CC) $(CFLAGS) -g -o build/test/check_pdftrick_render.o test/check_pdftrick_render.c
-				$(CC) $(CFLAGS) -g -o build/test/pdftrick_native.o src/pdftrick_native.c
 				$(CC) $(CFLAGS) -g -o build/test/pdftrick_render.o src/pdftrick_render.c
 				$(CC) $(CFLAGS) -g -o build/test/page_render.o src/page_render.c
 link-test:	

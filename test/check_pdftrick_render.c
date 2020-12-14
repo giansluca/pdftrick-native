@@ -16,8 +16,8 @@ START_TEST(it_should_build_image_path) {
     char *expected = "test_path/image_10.png";
 
     char *images_folder_path = "test_path/";
-    char *page = "10";
-    char *image_path = build_image_path(images_folder_path, page);
+    int page_number = 10;
+    char *image_path = build_image_path(images_folder_path, page_number);
 
     ck_assert_str_eq(expected, image_path);
 
@@ -25,32 +25,17 @@ START_TEST(it_should_build_image_path) {
 }
 END_TEST
 
-Suite *general_suite(void) {
+Suite *functions_suite(void) {
     Suite *suite;
-    TCase *pdftrick_render;
+    TCase *tcase;
 
-    suite = suite_create("General");
-    pdftrick_render = tcase_create("pdftrick_render");
+    suite = suite_create("Functions suite");
+    tcase = tcase_create("Build image path string");
 
-    tcase_add_test(pdftrick_render, it_should_calculate_digits_of_a_number);
-    tcase_add_test(pdftrick_render, it_should_build_image_path);
+    tcase_add_test(tcase, it_should_calculate_digits_of_a_number);
+    tcase_add_test(tcase, it_should_build_image_path);
 
-    suite_add_tcase(suite, pdftrick_render);
+    suite_add_tcase(suite, tcase);
 
     return suite;
-}
-
-int main(void) {
-    int number_failed = 0;
-    Suite *suite;
-    SRunner *suite_runner;
-
-    suite = general_suite();
-    suite_runner = srunner_create(suite);
-
-    srunner_run_all(suite_runner, CK_NORMAL);
-    number_failed = srunner_ntests_failed(suite_runner);
-    srunner_free(suite_runner);
-
-    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

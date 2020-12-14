@@ -6,33 +6,32 @@
 char *create_lock_file(char *img_path);
 void delete_lock_file(char *file_look_path);
 int get_page_number_digits(int page_number);
-char *build_image_path(const char *images_folder_path, char *page);
+char *build_image_path(const char *images_folder_path, int page_number);
 
 void render_thumbail(const char *pdf_file_path, const char *images_folder_path,
                      const int page_number, const int zoom,
                      const int rotation) {
 
-    int page_number_digits = get_page_number_digits(page_number);
-    char page[page_number_digits + 1];
-    sprintf(page, "%d", page_number);
-
-    char *image_path = build_image_path(images_folder_path, page);
+    char *image_path = build_image_path(images_folder_path, page_number);
 
     char *lock_file = create_lock_file(image_path);
     render(pdf_file_path, zoom, rotation, image_path, page_number);
+
     delete_lock_file(lock_file);
     free(image_path);
 }
 
-char *build_image_path(const char *images_folder_path, char *page) {
+char *build_image_path(const char *images_folder_path, int page_number) {
     char *prefix = "image_";
     char *extension = ".png";
 
+    int page_number_digits = get_page_number_digits(page_number);
+
     char *image_path = malloc((strlen(images_folder_path) + strlen(prefix) +
-                               strlen(page) + strlen(extension) + 1) *
+                               page_number_digits + strlen(extension) + 1) *
                               sizeof(char));
 
-    sprintf(image_path, "%s%s%s%s", images_folder_path, prefix, page,
+    sprintf(image_path, "%s%s%d%s", images_folder_path, prefix, page_number,
             extension);
 
     return image_path;

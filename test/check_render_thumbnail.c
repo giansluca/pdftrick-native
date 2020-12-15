@@ -14,9 +14,17 @@ void render_integration_test(int page_number) {
 }
 
 START_TEST(it_should_render_thumbnail) {
-    int test = 5;
+    int size = 5;
+    ck_assert_int_eq(size, 5);
 
-    ck_assert_int_eq(test, 5);
+    int *pointer;
+    pointer = malloc(10 * sizeof(int));
+    pointer[0] = 99;
+    *(pointer + 1) = 100;
+
+    for (int i = 0; i < size; i++)
+        printf("%d\n", pointer[i]);
+    puts("\n");
 }
 END_TEST
 

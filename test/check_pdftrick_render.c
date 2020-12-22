@@ -2,6 +2,7 @@
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 START_TEST(it_should_calculate_digits_of_a_number) {
     ck_assert_int_eq(get_page_number_digits(1), 1);
@@ -25,6 +26,17 @@ START_TEST(it_should_build_image_path) {
 }
 END_TEST
 
+START_TEST(it_should_create_lock_file) {
+    char *image_path = "test/out-files/file.png";
+    char *lock_file_path = create_lock_file(image_path);
+
+    ck_assert_int_eq(access(lock_file_path, F_OK), 0);
+
+    remove(lock_file_path);
+    free(lock_file_path);
+}
+END_TEST
+
 Suite *functions_suite(void) {
     Suite *suite;
     TCase *tcase;
@@ -34,6 +46,7 @@ Suite *functions_suite(void) {
 
     tcase_add_test(tcase, it_should_calculate_digits_of_a_number);
     tcase_add_test(tcase, it_should_build_image_path);
+    tcase_add_test(tcase, it_should_create_lock_file);
 
     suite_add_tcase(suite, tcase);
 

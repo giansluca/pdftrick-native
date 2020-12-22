@@ -2,29 +2,22 @@
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-void render_integration_test(int page_number) {
-    char *pdf_file_path = "../../test/resources/basic-1.pdf";
-    char *images_folder_path = "../../test/out-files/";
+START_TEST(it_should_render_thumbnail) {
+    char *pdf_file_path = "test/resources/basic-1.pdf";
+    char *images_folder_path = "test/out-files/";
+    int page_number = 99;
     int zoom = 30;
     int rotation = 0;
 
     render_thumbail(pdf_file_path, images_folder_path, page_number, zoom,
                     rotation);
-}
 
-START_TEST(it_should_render_thumbnail) {
-    int size = 5;
-    ck_assert_int_eq(size, 5);
+    char *expected_image_path = "test/out-files/image_99.png";
+    ck_assert_int_eq(access(expected_image_path, F_OK), 0);
 
-    int *pointer;
-    pointer = malloc(10 * sizeof(int));
-    pointer[0] = 99;
-    *(pointer + 1) = 100;
-
-    for (int i = 0; i < size; i++)
-        printf("%d\n", pointer[i]);
-    puts("\n");
+    remove(expected_image_path);
 }
 END_TEST
 

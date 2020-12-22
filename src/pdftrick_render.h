@@ -6,5 +6,7 @@ void render_thumbail(const char *pdf_file_path, const char *images_folder_path,
 
 char *build_image_path(const char *images_folder_path, int page_number);
 int get_page_number_digits(int page_number);
+char *create_lock_file(char *image_path);
+void delete_lock_file(char *lock_file_path);
 
 #endif

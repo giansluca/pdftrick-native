@@ -3,18 +3,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+char *build_image_path(const char *images_folder_path, int page_number);
+int get_page_number_digits(int page_number);
 char *create_lock_file(char *img_path);
 void delete_lock_file(char *file_look_path);
-int get_page_number_digits(int page_number);
-char *build_image_path(const char *images_folder_path, int page_number);
 
 void render_thumbail(const char *pdf_file_path, const char *images_folder_path,
                      const int page_number, const int zoom,
                      const int rotation) {
 
     char *image_path = build_image_path(images_folder_path, page_number);
-
     char *lock_file = create_lock_file(image_path);
+
     render(pdf_file_path, zoom, rotation, image_path, page_number);
 
     delete_lock_file(lock_file);
@@ -47,16 +47,15 @@ int get_page_number_digits(int page_number) {
 }
 
 char *create_lock_file(char *image_path) {
-    char *extension = ".look";
+    char *extension = ".lock";
     char *lock_file_path =
         malloc((strlen(image_path) + strlen(extension) + 1) * sizeof(char));
 
     sprintf(lock_file_path, "%s%s", image_path, extension);
 
     FILE *lock_file = fopen(lock_file_path, "w");
-
     if (lock_file == NULL)
-        return NULL;
+        exit(-1);
 
     fclose(lock_file);
     return lock_file_path;

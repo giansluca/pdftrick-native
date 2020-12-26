@@ -26,7 +26,7 @@ Suite *render_suite(void) {
     TCase *tcase;
 
     suite = suite_create("Render suite");
-    tcase = tcase_create("Render a thumbnail from pdf page");
+    tcase = tcase_create("Render test case");
 
     tcase_add_test(tcase, it_should_render_thumbnail);
 

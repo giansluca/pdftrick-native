@@ -2,6 +2,7 @@
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 START_TEST(it_should_calculate_digits_of_a_number) {
@@ -32,6 +33,13 @@ START_TEST(it_should_create_lock_file) {
 
     ck_assert_int_eq(access(lock_file_path, F_OK), 0);
 
+    char file_string[10];
+    FILE *fp = fopen(lock_file_path, "r");
+    fscanf(fp, "%s", file_string);
+
+    ck_assert_int_eq(strcmp(file_string, "Created"), 0);
+
+    fclose(fp);
     remove(lock_file_path);
     free(lock_file_path);
 }
@@ -42,7 +50,7 @@ Suite *functions_suite(void) {
     TCase *tcase;
 
     suite = suite_create("Functions suite");
-    tcase = tcase_create("Build image path string");
+    tcase = tcase_create("Functions test case");
 
     tcase_add_test(tcase, it_should_calculate_digits_of_a_number);
     tcase_add_test(tcase, it_should_build_image_path);

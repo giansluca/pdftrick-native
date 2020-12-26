@@ -53,9 +53,11 @@ char *create_lock_file(char *image_path) {
 
     sprintf(lock_file_path, "%s%s", image_path, extension);
 
-    FILE *lock_file = fopen(lock_file_path, "w");
+    FILE *lock_file = fopen(lock_file_path, "a+");
     if (lock_file == NULL)
-        exit(-1);
+        exit(EXIT_FAILURE);
+
+    fprintf(lock_file, "Created");
 
     fclose(lock_file);
     return lock_file_path;

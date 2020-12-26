@@ -73,7 +73,7 @@ $(TEST_OBJECTS): $(TEST_OUT)/%.o: $(TEST)/%.c
 	$(CC) $(CFLAGS) -o $@ $< 
 
 link-test:	
-				$(CC) $(TEST-LDFLAGS) $(RELEASE_OBJECTS) $(TEST_OBJECTS) $(LIBS) \
+				$(CC) $(RELEASE_OBJECTS) $(TEST_OBJECTS) $(TEST-LDFLAGS) $(LIBS) \
 				-o build/test/all_tests.$(TARGET_EXENSION)
 
 run-test:

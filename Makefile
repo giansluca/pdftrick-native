@@ -23,7 +23,7 @@ ifeq ($(DETECTED_OS),Darwin)
 	TARGET_EXENSION := out
 endif
 
-VERSION := 1.0.1
+VERSION := 1.0.2
 CFLAGS := -c -m64 -O2 -fPIC -Wall -I headers/
 TEST-LDFLAGS := -lcheck -lm -lpthread
 

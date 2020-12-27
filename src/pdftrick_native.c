@@ -1,7 +1,8 @@
 #include "org_gmdev_pdftrick_nativeutil_NativeLibCall.h"
 #include "pdftrick_render.h"
 
-JNIEXPORT void JNICALL Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_start(
+JNIEXPORT void JNICALL
+Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_renderThumbnail(
     JNIEnv *env, jobject obj, jstring _pdf_file_path,
     jstring _images_folder_path, jint _page_number, jint _zoom) {
 
@@ -20,7 +21,8 @@ JNIEXPORT void JNICALL Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_start(
     (*env)->ReleaseStringUTFChars(env, _pdf_file_path, pdf_file_path);
 }
 
-JNIEXPORT void JNICALL Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_cover(
+JNIEXPORT void JNICALL
+Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_renderFull(
     JNIEnv *env, jobject obj, jstring _pdf_file_path,
     jstring _images_folder_path, jint _page_number, jint _zoom) {
 
@@ -28,6 +30,8 @@ JNIEXPORT void JNICALL Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_cover(
         (*env)->GetStringUTFChars(env, _pdf_file_path, 0);
     const char *images_folder_path =
         (*env)->GetStringUTFChars(env, _images_folder_path, 0);
+
+    // TODO
     // const int page_number = (int)_page_number;
     // const int zoom = (int)_zoom;
     // const int rotation = 0;

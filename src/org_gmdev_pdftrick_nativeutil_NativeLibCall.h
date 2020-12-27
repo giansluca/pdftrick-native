@@ -10,19 +10,22 @@ extern "C" {
 #endif
 /*
  * Class:     org_gmdev_pdftrick_nativeutil_NativeLibCall
- * Method:    start
+ * Method:    renderThumbnail
  * Signature: (String, String, int, int)
  */
-JNIEXPORT void JNICALL Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_start(
+JNIEXPORT void JNICALL
+Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_renderThumbnail(
     JNIEnv *, jobject, jstring, jstring, jint, jint);
 
 /*
  * Class:     org_gmdev_pdftrick_nativeutil_NativeLibCall
- * Method:    cover
+ * Method:    renderFull
  * Signature: (String, String, int, int)
  */
-JNIEXPORT void JNICALL Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_cover(
-    JNIEnv *, jobject, jstring, jstring, jint, jint);
+JNIEXPORT void JNICALL
+Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_renderFull(JNIEnv *, jobject,
+                                                            jstring, jstring,
+                                                            jint, jint);
 
 #ifdef __cplusplus
 }

@@ -1,6 +1,5 @@
 branches:
   only:
-    #- develop
     - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 language: c
 jobs:
@@ -15,8 +14,6 @@ jobs:
 script:
   - make release
 before_deploy:
-  #- export MAC_FILE_PATH=build/release/pdftrick-native_1.0.1.jnilib
-  #- export WIN_FILE_PATH=build/release/pdftrick-native_1.0.1.dll
   - export MAC_FILE_PATH=build/release/pdftrick-native_${TRAVIS_TAG:1}.jnilib
   - export WIN_FILE_PATH=build/release/pdftrick-native_${TRAVIS_TAG:1}.dll
 deploy:

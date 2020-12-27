@@ -23,9 +23,9 @@ ifeq ($(DETECTED_OS),Darwin)
 	TARGET_EXENSION := out
 endif
 
+VERSION := 1.0.1
 CFLAGS := -c -m64 -O2 -fPIC -Wall -I headers/
 TEST-LDFLAGS := -lcheck -lm -lpthread
-VERSION := 1.0.1
 
 RELEASE_OUT := build/release
 SRC := src
@@ -49,11 +49,6 @@ clean-release:
 compile-release:	$(RELEASE_OBJECTS)
 $(RELEASE_OBJECTS): $(RELEASE_OUT)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -o $@ $< 
-
-compile-release-2:
-				$(CC) $(CFLAGS) -o build/release/pdftrick_native.o src/pdftrick_native.c
-				$(CC) $(CFLAGS) -o build/release/pdftrick_render.o src/pdftrick_render.c
-				$(CC) $(CFLAGS) -o build/release/page_render.o src/page_render.c
 
 link-release:
 				$(CC) $(LDFLAGS) $(wildcard build/release/*.o) $(LIBS) \

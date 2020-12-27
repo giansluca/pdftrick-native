@@ -1,6 +1,8 @@
 .vscode/
-dist/
+build/
 
-.DS_Store
+
+*.png
+*.lock
+*.DS_Store
 info.txt
-test.txt

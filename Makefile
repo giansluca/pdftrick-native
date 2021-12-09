@@ -24,8 +24,8 @@ ifeq ($(DETECTED_OS),Darwin)
 endif
 
 VERSION := 1.0.2
-CFLAGS := -c -m64 -O2 -fPIC -Wall -I headers/
-TEST-LDFLAGS := -lcheck -lm -lpthread
+CFLAGS := -c -m64 -O2 -fPIC -Wall -I headers/ $(shell pkg-config --cflags check)
+TEST-LDFLAGS := $(shell pkg-config --libs check)
 
 RELEASE_OUT := build/release
 SRC := src

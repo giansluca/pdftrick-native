@@ -12,16 +12,13 @@ jobs:
       #- run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Checkout repository
         uses: actions/checkout@v3
-      # - name: Set up MinGW
-      #   uses: egor-tensin/setup-mingw@v2
-      #   with:
-      #     platform: x64
       - name: Set up Mysys2
         uses: msys2/setup-msys2@v2
         with:
           update: true
           msystem: MINGW64
           install: >-
+            pkg-config
             make
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-check

@@ -7,9 +7,6 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
-      #- run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      #- run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      #- run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Set up Mysys2
@@ -22,17 +19,20 @@ jobs:
             make
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-check
+      
+      run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Test
         run: make test
+      - name: Release
+        run: make release
   deploy:
     runs-on: windows-latest
     needs: test
     if: github.ref == 'refs/heads/master'
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
+      - run: echo "Hello."
+      
   
  

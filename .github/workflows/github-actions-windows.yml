@@ -22,8 +22,7 @@ jobs:
           msystem: MINGW64
           install: >-
             base-devel
-            check
-            make
+            pacman -S mingw-w64-x86_64-check
       # - name: Install Make
       #   run: choco install make
       - name: Test

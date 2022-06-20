@@ -3,6 +3,7 @@ on: [push]
 jobs:
   test:
     runs-on: windows-latest
+    #if: github.ref == 'refs/heads/develop'
     defaults:
       run:
         shell: msys2 {0}
@@ -22,14 +23,28 @@ jobs:
       - run: echo "Os -> ${{ runner.os }}, branch -> ${{ github.ref }}, repository -> ${{ github.repository }}."
       - name: Test
         run: make test
-      - name: Release
-        run: make release
   deploy:
     runs-on: windows-latest
     needs: test
-    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/master'
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
-      - run: echo "Hello."
-      
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Mysys2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          msystem: MINGW64
+          install: >-
+            pkg-config
+            make
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-check
+      - run: echo "Os -> ${{ runner.os }}, branch -> ${{ github.ref }}, repository -> ${{ github.repository }}."
+      - name: Release
+        run: make release
   
  

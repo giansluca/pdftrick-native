@@ -21,7 +21,8 @@ jobs:
           update: true
           msystem: MINGW64
           install: >-
-            base-devel
+            make
+            mingw-w64-x86_64-gcc
             mingw-w64-x86_64-check
       # - name: Install Make
       #   run: choco install make

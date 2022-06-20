@@ -11,8 +11,8 @@ START_TEST(it_should_render_thumbnail) {
     int zoom = 30;
     int rotation = 0;
 
-    render_thumbail(pdf_file_path, images_folder_path, page_number, zoom,
-                    rotation);
+    render_thumbnail(pdf_file_path, images_folder_path, page_number, zoom,
+                     rotation);
 
     char *expected_image_path = "test/out-files/image_99.png";
     ck_assert_int_eq(access(expected_image_path, F_OK), 0);

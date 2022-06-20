@@ -3,18 +3,20 @@ on: [push]
 jobs:
   test:
     runs-on: windows-latest
-    artifact: "windows_mingw.7z",
-    build_type: "Release",
-    cc: "gcc",
-    cxx: "g++",
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - run: choco install make
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up MinGW
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: x64
+      - name: Install Make
+        run: choco install make
       - name: build
-        run: make release
+        run: make test
   deploy:
     runs-on: windows-latest
     needs: test

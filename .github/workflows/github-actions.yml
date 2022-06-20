@@ -34,7 +34,6 @@ jobs:
 
   deploy-windows:
     runs-on: windows-latest
-    needs: test
     if: github.ref == 'refs/heads/master'
     defaults:
       run:

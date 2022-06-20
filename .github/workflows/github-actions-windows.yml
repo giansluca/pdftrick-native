@@ -26,7 +26,8 @@ jobs:
       # - name: Install Make
       #   run: choco install make
       - name: Test
-        run: make test
+        #run: make test
+        run: gcc -v
   deploy:
     runs-on: windows-latest
     needs: test

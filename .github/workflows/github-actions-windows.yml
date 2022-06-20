@@ -3,11 +3,18 @@ on: [push]
 jobs:
   test:
     runs-on: windows-latest
+    artifact: "windows_mingw.7z",
+    build_type: "Release",
+    cc: "gcc",
+    cxx: "g++",
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - run: exit 0
+      - run: choco install make
+      - uses: actions/checkout@v3
+      - name: build
+        run: make release
   deploy:
     runs-on: windows-latest
     needs: test
@@ -16,6 +23,7 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - run: exit 0
+      - name: Check out repository code
+        uses: actions/checkout@v3
   
  

@@ -41,6 +41,7 @@ jobs:
         run: make release
 
   create-release:
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     steps:
       - name: Checkout repository

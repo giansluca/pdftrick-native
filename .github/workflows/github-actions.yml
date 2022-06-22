@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Get version
         id: get-version
-        run: echo "::set-output name=CUR_VERSION::$(make version)"
+        run: echo ::set-output name=CUR_VERSION::$(make version)
       - name: Print Version
         run: echo "The version is ---> ${{ steps.get-version.outputs.CUR_VERSION }}"
     outputs:

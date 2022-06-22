@@ -49,7 +49,7 @@ jobs:
       - name: "Set version"
         env:
           VERSION: $(make version)
-      - run: echo Version is --> ${VERSION}
+        run: echo Version is --> $VERSION
       # - name: Create Release
       #   uses: actions/create-release@v1
       #   id: create_release

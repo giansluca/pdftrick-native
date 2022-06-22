@@ -47,8 +47,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: "Set version"
-        env:
-          VERSION: $(make version)
+        run: echo "VERSION=$(make version)" >> $GITHUB_ENV
         run: echo Version is --> $VERSION
       # - name: Create Release
       #   uses: actions/create-release@v1

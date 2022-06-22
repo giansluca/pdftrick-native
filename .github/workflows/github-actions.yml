@@ -46,10 +46,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Set version
-        run: echo "::set-output name=version::$(make version)"
-        id: version
-      - run: echo Version is --> ${{ steps.version.outputs.version }}
+      - name: "Set version"
+        env:
+          VERSION: $(make version)
+      - run: echo Version is --> ${VERSION}
       # - name: Create Release
       #   uses: actions/create-release@v1
       #   id: create_release

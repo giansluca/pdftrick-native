@@ -40,7 +40,7 @@ jobs:
       - name: Release
         run: make release
 
- create-release:
+  create-release:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     steps:

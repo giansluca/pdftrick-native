@@ -39,23 +39,25 @@ jobs:
         run: make test
       - name: Release
         run: make release
-
-  create-release:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      # - name: "Set version"
-      #   run: echo "VERSION=$(make version)" >> $GITHUB_ENV
-      # - run: echo Version is --> $VERSION
       - name: "Set version"
         id: get-version
         run: echo "::set-output name=CURRENT_VERSION::$(make version)"
       - name: Print Version
         run: echo "The version is ---> ${{ steps.get-version.outputs.CURRENT_VERSION }}"
-    outputs:
-      foo1-output: ${{ steps.get-version.outputs.CURRENT_VERSION }}
+
+  create-release:
+    # runs-on: ubuntu-latest
+    # if: github.ref == 'refs/heads/develop'
+    # steps:
+    #   - name: Checkout repository
+    #     uses: actions/checkout@v3
+    #   - name: "Set version"
+    #     id: get-version
+    #     run: echo "::set-output name=CURRENT_VERSION::$(make version)"
+    #   - name: Print Version
+    #     run: echo "The version is ---> ${{ steps.get-version.outputs.CURRENT_VERSION }}"
+    # outputs:
+    #   foo1-output: ${{ steps.get-version.outputs.CURRENT_VERSION }}
       # - name: Create Release
       #   uses: actions/create-release@v1
       #   id: create_release

@@ -39,13 +39,13 @@ jobs:
         run: make test
       - name: Release
         run: make release
-      - name: "Set version"
+      - name: Get version
         id: get-version
         run: echo "::set-output name=CURRENT_VERSION::$(make version)"
       - name: Print Version
         run: echo "The version is ---> ${{ steps.get-version.outputs.CURRENT_VERSION }}"
 
-  create-release:
+ # create-release:
     # runs-on: ubuntu-latest
     # if: github.ref == 'refs/heads/develop'
     # steps:

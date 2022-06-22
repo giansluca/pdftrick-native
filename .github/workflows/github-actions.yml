@@ -50,10 +50,12 @@ jobs:
       #   run: echo "VERSION=$(make version)" >> $GITHUB_ENV
       # - run: echo Version is --> $VERSION
       - name: "Set version"
-        id: version
+        id: get-version
         run: echo "::set-output name=CURRENT_VERSION::$(make version)"
-      - name: Get Version
-        run: echo "The version is ---> ${{ steps.version.outputs.CURRENT_VERSION }}"
+      - name: Print Version
+        run: echo "The version is ---> ${{ steps.get-version.outputs.CURRENT_VERSION }}"
+    outputs:
+      foo1-output: ${{ steps.get-version.outputs.CURRENT_VERSION }}
       # - name: Create Release
       #   uses: actions/create-release@v1
       #   id: create_release

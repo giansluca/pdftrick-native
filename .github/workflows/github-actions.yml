@@ -34,11 +34,18 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup dev tools
         run: brew install check
-      - run: echo "Os -> ${{ runner.os }}, branch -> ${{ github.ref }}, repository -> ${{ github.repository }}."
       - name: Test
         run: make test
       - name: Release
         run: make release
+      - name: Upload darwin artifact
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ github.token }}
+          with:
+            upload_url: ${{ needs.create-release.outputs.upload_url }}
+            asset_path: ./build/release/pdftrick-native_1.0.3.jnilib
+            asset_name: pdftrick-native_1.0.3.jnilib
 
   create-release:
     runs-on: ubuntu-latest
@@ -51,14 +58,18 @@ jobs:
         run: echo "::set-output name=CURRENT_VERSION::$(make version)"
       - name: Create Release
         uses: actions/create-release@v1
-        id: create_release
+        id: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           release_name: ${{ steps.version.outputs.CURRENT_VERSION }}
-          tag_name: ${{ steps.version.outputs.CURRENT_VERSION }}-RELEASE
+          tag_name: ${{ steps.version.outputs.CURRENT_VERSION }}
           draft: false
           prerelease: false
+    output:
+      upload_url: ${{ steps.release.outputs.upload_url }}
+      version: ${{ steps.version.outputs.CURRENT_VERSION }}
+
 
   #     deploy-windows:
   #   runs-on: windows-latest

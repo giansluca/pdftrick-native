@@ -39,13 +39,13 @@ jobs:
       - name: Release
         run: make release
       - name: Upload darwin artifact
-          uses: actions/upload-release-asset@v1
-          env:
-            GITHUB_TOKEN: ${{ github.token }}
-          with:
-            upload_url: ${{ needs.create-release.outputs.upload_url }}
-            asset_path: ./build/release/pdftrick-native_1.0.3.jnilib
-            asset_name: pdftrick-native_1.0.3.jnilib
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./build/release/pdftrick-native_1.0.3.jnilib
+          asset_name: pdftrick-native_1.0.3.jnilib
 
   create-release:
     runs-on: ubuntu-latest
@@ -69,7 +69,6 @@ jobs:
     output:
       upload_url: ${{ steps.release.outputs.upload_url }}
       version: ${{ steps.version.outputs.CURRENT_VERSION }}
-
 
   #     deploy-windows:
   #   runs-on: windows-latest

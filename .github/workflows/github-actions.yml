@@ -49,11 +49,11 @@ jobs:
       # - name: "Set version"
       #   run: echo "VERSION=$(make version)" >> $GITHUB_ENV
       # - run: echo Version is --> $VERSION
-      - name: "Set an output parameter"
+      - name: "Set version"
         id: version
-        run: |
-          echo "::set-output name=current_version::$(make version)"
-      - run: echo "version is --> ${{steps.version.outputs.current_version}}"
+        run: echo "::set-output name=CURRENT_VERSION::$(make version)"
+      - name: Get Version
+        run: echo "The version is ---> ${{ steps.version.outputs.CURRENT_VERSION }}"
       # - name: Create Release
       #   uses: actions/create-release@v1
       #   id: create_release

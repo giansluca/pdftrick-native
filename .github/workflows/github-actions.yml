@@ -46,9 +46,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: "Set version"
-        run: echo "VERSION=$(make version)" >> $GITHUB_ENV
-      - run: echo Version is --> $VERSION
+      # - name: "Set version"
+      #   run: echo "VERSION=$(make version)" >> $GITHUB_ENV
+      # - run: echo Version is --> $VERSION
+      - name: "Set an output parameter"
+        id: version
+        run: |
+          echo "::set-output name=current_version::$(make version)"
+      - run: echo "version is --> ${{steps.version.outputs.current_version}}"
       # - name: Create Release
       #   uses: actions/create-release@v1
       #   id: create_release

@@ -46,7 +46,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: version
+      - name: Set version
         run: echo "::set-output name=version::$(make version)"
         id: version
       - name: Create Release
@@ -56,7 +56,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           release_name: ${{ steps.version.outputs.version }}
-          tag_name: ${{ steps.version.outputs.version }}-RELEASE
+          tag_name: ${{ steps.version.outputs.version }}
           draft: false
           prerelease: false
 

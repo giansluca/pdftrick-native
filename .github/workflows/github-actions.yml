@@ -46,13 +46,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Get version
-        id: get-version
-        run: echo ::set-output name=CUR_VERSION::$(make version)
-      - name: Print Version
-        run: echo "The version is ---> ${{ steps.get-version.outputs.CUR_VERSION }}"
-    outputs:
-      version: ${{ steps.get-version.outputs.CUR_VERSION }}
+      - name: "Set version"
+        id: version
+        run: echo "::set-output name=CURRENT_VERSION::$(make version)"
+      - name: Get Version
+        run: echo "The version is ---> ${{ steps.version.outputs.CURRENT_VERSION }}"
       # - name: Create Release
       #   uses: actions/create-release@v1
       #   id: create_release

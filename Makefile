@@ -7,7 +7,7 @@ else
     DETECTED_OS := $(shell uname -s)
 endif
 
-$(info ************************ Building on $(DETECTED_OS) ******************************)
+#$(info ************************ Building on $(DETECTED_OS) ******************************)
 
 ifeq ($(DETECTED_OS),Windows)
 	CC := gcc

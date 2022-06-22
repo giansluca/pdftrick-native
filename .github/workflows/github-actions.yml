@@ -49,18 +49,16 @@ jobs:
       - name: "Set version"
         id: version
         run: echo "::set-output name=CURRENT_VERSION::$(make version)"
-      - name: Get Version
-        run: echo "The version is ---> ${{ steps.version.outputs.CURRENT_VERSION }}"
-      # - name: Create Release
-      #   uses: actions/create-release@v1
-      #   id: create_release
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     release_name: ${{ steps.version.outputs.version }}
-      #     tag_name: ${{ steps.version.outputs.version }}
-      #     draft: false
-      #     prerelease: false
+      - name: Create Release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: ${{ steps.version.outputs.CURRENT_VERSION }}
+          tag_name: ${{ steps.version.outputs.CURRENT_VERSION }}-RELEASE
+          draft: false
+          prerelease: false
 
   #     deploy-windows:
   #   runs-on: windows-latest

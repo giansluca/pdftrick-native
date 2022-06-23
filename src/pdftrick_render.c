@@ -8,9 +8,9 @@ int get_page_number_digits(int page_number);
 char *create_lock_file(char *img_path);
 void delete_lock_file(char *file_look_path);
 
-void render_thumbail(const char *pdf_file_path, const char *images_folder_path,
-                     const int page_number, const int zoom,
-                     const int rotation) {
+void render_thumbnail(const char *pdf_file_path, const char *images_folder_path,
+                      const int page_number, const int zoom,
+                      const int rotation) {
 
     char *image_path = build_image_path(images_folder_path, page_number);
     char *lock_file = create_lock_file(image_path);

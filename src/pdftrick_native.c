@@ -14,8 +14,8 @@ Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_renderThumbnail(
     const int zoom = (int)_zoom;
     const int rotation = 0;
 
-    render_thumbail(pdf_file_path, images_folder_path, page_number, zoom,
-                    rotation);
+    render_thumbnail(pdf_file_path, images_folder_path, page_number, zoom,
+                     rotation);
 
     (*env)->ReleaseStringUTFChars(env, _images_folder_path, images_folder_path);
     (*env)->ReleaseStringUTFChars(env, _pdf_file_path, pdf_file_path);

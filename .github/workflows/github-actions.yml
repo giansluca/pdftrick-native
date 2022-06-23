@@ -21,42 +21,23 @@ jobs:
             make
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-check
-      - run: echo "Os -> ${{ runner.os }}, branch -> ${{ github.ref }}, repository -> ${{ github.repository }}."
-      - name: Run Test
+      - name: Test
         run: make test
-      - name: Create Release
-        run: make release
 
   test-mac:
-    needs: create-release
     runs-on: macos-latest
     if: github.ref == 'refs/heads/develop'
-    env:
-      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Setup dev tools
         run: brew install check
-      - name: Run Test
+      - name: Test
         run: make test
-      - name: Create Release
-        run: make release
-      - name: Upload mac artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
-          asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
-          asset_content_type: application/octet-stream
-      - name: Print version
-        run: echo "release version is $RELEASE_VERSION"
 
   create-release:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -77,37 +58,59 @@ jobs:
       upload_url: ${{ steps.release.outputs.upload_url }}
       release_version: ${{ steps.version.outputs.RELEASE_VERSION }}
 
-  #     deploy-windows:
-  #   runs-on: windows-latest
-  #   if: github.ref == 'refs/heads/master'
-  #   defaults:
-  #     run:
-  #       shell: msys2 {0}
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-  #     - name: Set up Mysys2
-  #       uses: msys2/setup-msys2@v2
-  #       with:
-  #         update: true
-  #         msystem: MINGW64
-  #         install: >-
-  #           pkg-config
-  #           make
-  #           mingw-w64-x86_64-gcc
-  #           mingw-w64-x86_64-check
-  #     - run: echo "Os -> ${{ runner.os }}, branch -> ${{ github.ref }}, repository -> ${{ github.repository }}."
-  #     - name: Release
-  #       run: make release
-
-  # deploy-mac:
-  #   runs-on: macos-latest
-  #   if: github.ref == 'refs/heads/master'
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-  #     - name: Setup dev tools
-  #       run: brew install check
-  #     - run: echo "Os -> ${{ runner.os }}, branch -> ${{ github.ref }}, repository -> ${{ github.repository }}."
-  #     - name: Release
-  #       run: make release
+  release-mac:
+    needs: create-release
+    runs-on: macos-latest
+    if: github.ref == 'refs/heads/master'
+    env:
+      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup dev tools
+        run: brew install check
+      - name: Build
+        run: make release
+      - name: Upload mac artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
+          asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
+          asset_content_type: application/octet-stream
+  
+  release-windows:
+    needs: create-release
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/master'
+    env:
+      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Mysys2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          msystem: MINGW64
+          install: >-
+            pkg-config
+            make
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-check
+      - name: Build
+        run: make release
+      - name: Upload mac artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.dll
+          asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.dll
+          asset_content_type: application/octet-stream

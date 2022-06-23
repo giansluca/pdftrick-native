@@ -27,6 +27,7 @@ jobs:
         run: make release
 
   test-mac:
+    needs: create-release
     runs-on: macos-latest
     if: github.ref == 'refs/heads/develop'
     steps:

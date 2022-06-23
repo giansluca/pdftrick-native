@@ -22,9 +22,9 @@ jobs:
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-check
       - run: echo "Os -> ${{ runner.os }}, branch -> ${{ github.ref }}, repository -> ${{ github.repository }}."
-      - name: Test
+      - name: Run Test
         run: make test
-      - name: Release
+      - name: Create Release
         run: make release
 
   test-mac:
@@ -38,18 +38,18 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup dev tools
         run: brew install check
-      - name: Test
+      - name: Run Test
         run: make test
-      - name: Release
+      - name: Create Release
         run: make release
-      - name: Upload darwin artifact
+      - name: Upload mac artifact
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/release/pdftrick-native_1.0.3.jnilib
-          asset_name: pdftrick-native_1.0.3.jnilib
+          asset_path: "./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib"
+          asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
           asset_content_type: application/octet-stream
       - name: Print version
         run: echo "release version is $RELEASE_VERSION"

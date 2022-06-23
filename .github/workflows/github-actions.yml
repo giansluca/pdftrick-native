@@ -1,9 +1,6 @@
 name: pdftrick-native windows
 on: [push]
 
-env:
-  RELEASE_VERSION: "NO->"
-
 jobs:
   test-windows:
     runs-on: windows-latest
@@ -47,12 +44,13 @@ jobs:
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
           asset_path: ./build/release/pdftrick-native_1.0.3.jnilib
           asset_name: pdftrick-native_1.0.3.jnilib
           asset_content_type: application/octet-stream
-      - run: echo "the version is $RELEASE_VERSION"
+      - run: echo "release version is: $RELEASE_VERSION"
 
   create-release:
     runs-on: ubuntu-latest
@@ -60,23 +58,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: "Set version"
+      - name: "Set release version"
         id: version
-        run: echo "::set-output name=CURRENT_VERSION::$(make version)"
+        run: echo "::set-output name=RELEASE_VERSION::$(make version)"
       - name: Create Release
         uses: actions/create-release@v1
         id: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ steps.version.outputs.CURRENT_VERSION }}
         with:
-          release_name: ${{ steps.version.outputs.CURRENT_VERSION }}
-          tag_name: ${{ steps.version.outputs.CURRENT_VERSION }}
+          release_name: ${{ steps.version.outputs.RELEASE_VERSION }}
+          tag_name: ${{ steps.version.outputs.RELEASE_VERSION }}
           draft: false
           prerelease: false
     outputs:
       upload_url: ${{ steps.release.outputs.upload_url }}
-      version: ${{ steps.version.outputs.CURRENT_VERSION }}
+      release_version: ${{ steps.version.outputs.RELEASE_VERSION }}
 
   #     deploy-windows:
   #   runs-on: windows-latest

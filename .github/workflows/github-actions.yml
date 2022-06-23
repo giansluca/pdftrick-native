@@ -47,6 +47,7 @@ jobs:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
           asset_path: ./build/release/pdftrick-native_1.0.3.jnilib
           asset_name: pdftrick-native_1.0.3.jnilib
+          asset_content_type: application/octet-stream
 
   create-release:
     runs-on: ubuntu-latest

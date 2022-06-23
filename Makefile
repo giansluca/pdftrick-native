@@ -43,7 +43,7 @@ TEST_OBJECTS := $(TEST_OUT)/test_runner.o \
 
 # ----------------------------------------------- VERSION -----------------------------------------------
 version:
-	@echo v$(VERSION)
+	@echo $(VERSION)
 # ----------------------------------------------- RELEASE -----------------------------------------------
 release: clean-release compile-release link-release
 

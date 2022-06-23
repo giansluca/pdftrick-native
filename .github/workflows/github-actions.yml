@@ -1,5 +1,9 @@
 name: pdftrick-native windows
 on: [push]
+
+env:
+  RELEASE_VERSION: "NO->"
+
 jobs:
   test-windows:
     runs-on: windows-latest
@@ -48,6 +52,7 @@ jobs:
           asset_path: ./build/release/pdftrick-native_1.0.3.jnilib
           asset_name: pdftrick-native_1.0.3.jnilib
           asset_content_type: application/octet-stream
+      - run: echo "the version is $RELEASE_VERSION"
 
   create-release:
     runs-on: ubuntu-latest
@@ -63,6 +68,7 @@ jobs:
         id: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ steps.version.outputs.CURRENT_VERSION }}
         with:
           release_name: ${{ steps.version.outputs.CURRENT_VERSION }}
           tag_name: ${{ steps.version.outputs.CURRENT_VERSION }}

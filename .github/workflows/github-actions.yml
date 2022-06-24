@@ -1,4 +1,4 @@
-name: pdftrick-native windows
+name: pdftrick-native
 on: [push]
 
 jobs:

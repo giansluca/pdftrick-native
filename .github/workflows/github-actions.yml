@@ -2,6 +2,17 @@ name: pdftrick-native windows
 on: [push]
 
 jobs:
+  test-mac:
+    runs-on: macos-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup dev tools
+        run: brew install check
+      - name: Test
+        run: make test
+
   test-windows:
     runs-on: windows-latest
     if: github.ref == 'refs/heads/develop'
@@ -24,24 +35,13 @@ jobs:
       - name: Test
         run: make test
 
-  test-mac:
-    runs-on: macos-latest
-    if: github.ref == 'refs/heads/develop'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Setup dev tools
-        run: brew install check
-      - name: Test
-        run: make test
-
   create-release:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: "Set release version"
+      - name: Set release version
         id: version
         run: echo "::set-output name=RELEASE_VERSION::$(make version)"
       - name: Create Release

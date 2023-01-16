@@ -11,7 +11,7 @@ endif
 
 ifeq ($(DETECTED_OS),Windows)
 	CC := gcc
-	LDFLAGS := -Wl,--kill-at,-lm -D_JNI_IMPLEMENTATION -static-libgcc -shared
+	LDFLAGS := -Wl,--kill-at,-lm -D_JNI_IMPLEMENTATION -shared
 	LIBS := libs/win/libmupdf.a libs/win/libfreetype.a libs/win/libjbig2dec.a \
 			libs/win/libjpeg.a libs/win/libopenjpeg.a libs/win/libz.a
 	TARGET_LIB_EXTENSION := dll

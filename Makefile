@@ -11,7 +11,7 @@ endif
 
 ifeq ($(DETECTED_OS),Windows)
 	CC := gcc
-	LDFLAGS := -Wl,--kill-at -D_JNI_IMPLEMENTATION -static-libgcc -shared -lm
+	LDFLAGS := -Wl,--kill-at,-lm -D_JNI_IMPLEMENTATION -static-libgcc -shared
 	LIBS := libs/win/libmupdf.a libs/win/libfreetype.a libs/win/libjbig2dec.a \
 			libs/win/libjpeg.a libs/win/libopenjpeg.a libs/win/libz.a
 	TARGET_LIB_EXTENSION := dll
@@ -19,7 +19,7 @@ ifeq ($(DETECTED_OS),Windows)
 endif	
 ifeq ($(DETECTED_OS),Darwin)
 	CC := clang
-	LDFLAGS := -Wl,-no_compact_unwind -dynamiclib -lm
+	LDFLAGS := -Wl,-no_compact_unwind,-lm -dynamiclib
 	LIBS := libs/mac/libmupdf.a libs/mac/libfreetype.a libs/mac/libjbig2dec.a \
 			libs/mac/libjpeg.a libs/mac/libopenjpeg.a libs/mac/libz.a
 	TARGET_LIB_EXTENSION := jnilib

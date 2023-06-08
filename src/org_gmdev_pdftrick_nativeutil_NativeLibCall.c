@@ -1,5 +1,5 @@
 #include "org_gmdev_pdftrick_nativeutil_NativeLibCall.h"
-#include "pdftrick_render.h"
+#include "page_render.h"
 
 JNIEXPORT void JNICALL
 Java_org_gmdev_pdftrick_nativeutil_NativeLibCall_renderThumbnail(

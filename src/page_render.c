@@ -1,80 +1,69 @@
-#include <mupdf/fitz.h>
+#include "mupdf_render.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-void render(const char *filename, int zoom, int rotation, char *img_path,
-            int pagenumber) {
+char *build_image_path(const char *images_folder_path, int page_number);
+int get_page_number_digits(int page_number);
+char *create_lock_file(char *img_path);
+void delete_lock_file(char *file_look_path);
 
-    fz_context *ctx;
-    fz_document *doc;
-    // int pagecount;
-    fz_page *page;
-    fz_matrix transform;
-    fz_rect bounds;
-    fz_irect bbox;
-    fz_pixmap *pix;
-    fz_device *dev;
+void render_thumbnail(const char *pdf_file_path, const char *images_folder_path,
+                      const int page_number, const int zoom,
+                      const int rotation) {
 
-    // Create a context to hold the exception stack and various caches.
-    ctx = fz_new_context(NULL, NULL, FZ_STORE_UNLIMITED);
+    char *image_path = build_image_path(images_folder_path, page_number);
+    char *lock_file = create_lock_file(image_path);
 
-    // Register the default file types.
-    fz_register_document_handlers(ctx);
+    render(pdf_file_path, zoom, rotation, image_path, page_number);
 
-    // Open the PDF, XPS or CBZ document.
-    doc = fz_open_document(ctx, filename);
+    delete_lock_file(lock_file);
+    free(image_path);
+}
 
-    // Retrieve the number of pages (not used in this example).
-    // pagecount = fz_count_pages(ctx, doc);
+char *build_image_path(const char *images_folder_path, int page_number) {
+    char *prefix = "image_";
+    char *extension = ".png";
 
-    // Load the page we want. Page numbering starts from zero.
-    page = fz_load_page(ctx, doc, pagenumber - 1);
+    int page_number_digits = get_page_number_digits(page_number);
 
-    // Calculate a transform to use when rendering. This transform
-    // contains the scale and rotation. Convert zoom percentage to a
-    // scaling factor. Without scaling the resolution is 72 dpi.
-    fz_rotate(&transform, rotation);
-    fz_pre_scale(&transform, zoom / 100.0f, zoom / 100.0f);
+    char *image_path = malloc((strlen(images_folder_path) + strlen(prefix) +
+                               page_number_digits + strlen(extension) + 1) *
+                              sizeof(char));
 
-    // Take the page bounds and transform them by the same matrix that
-    // we will use to render the page.
-    fz_bound_page(ctx, page, &bounds);
-    fz_transform_rect(&bounds, &transform);
+    sprintf(image_path, "%s%s%d%s", images_folder_path, prefix, page_number,
+            extension);
 
-    // Create a blank pixmap to hold the result of rendering. The
-    // pixmap bounds used here are the same as the transformed page
-    // bounds, so it will contain the entire page. The page coordinate
-    // space has the origin at the top left corner and the x axis
-    // extends to the right and the y axis extends down.
-    fz_round_rect(&bbox, &bounds);
-    pix = fz_new_pixmap_with_bbox(ctx, fz_device_rgb(ctx), &bbox);
-    fz_clear_pixmap_with_value(ctx, pix, 0xff);
+    return image_path;
+}
 
-    // A page consists of a series of objects (text, line art, images,
-    // gradients). These objects are passed to a device when the
-    // interpreter runs the page. There are several devices, used for
-    // different purposes:
-    //
-    //	draw device -- renders objects to a target pixmap.
-    //
-    //	text device -- extracts the text in reading order with styling
-    //	information. This text can be used to provide text search.
-    //
-    //	list device -- records the graphic objects in a list that can
-    //	be played back through another device. This is useful if you
-    //	need to run the same page through multiple devices, without
-    //	the overhead of parsing the page each time.
+int get_page_number_digits(int page_number) {
+    int digits = 0;
+    while (page_number != 0) {
+        digits++;
+        page_number /= 10;
+    }
+    return digits;
+}
 
-    // Create a draw device with the pixmap as its target.
-    // Run the page with the transform.
-    dev = fz_new_draw_device(ctx, pix);
-    fz_run_page(ctx, page, dev, &transform, NULL);
-    fz_drop_device(ctx, dev);
+char *create_lock_file(char *image_path) {
+    char *extension = ".lock";
+    char *lock_file_path =
+        malloc((strlen(image_path) + strlen(extension) + 1) * sizeof(char));
 
-    // Save the pixmap to a file.
-    fz_write_png(ctx, pix, img_path, 0);
+    sprintf(lock_file_path, "%s%s", image_path, extension);
 
-    // Clean up.
-    fz_drop_pixmap(ctx, pix);
-    fz_drop_page(ctx, page);
-    fz_drop_document(ctx, doc);
-    fz_drop_context(ctx);
+    FILE *lock_file = fopen(lock_file_path, "a+");
+    if (lock_file == NULL)
+        exit(EXIT_FAILURE);
+
+    fprintf(lock_file, "Created");
+
+    fclose(lock_file);
+    return lock_file_path;
+}
+
+void delete_lock_file(char *lock_file_path) {
+    remove(lock_file_path);
+    free(lock_file_path);
 }

@@ -1,12 +1,9 @@
+#include "page_render.h"
 #include "mupdf_render.h"
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-char *build_image_path(const char *images_folder_path, int page_number);
-int get_page_number_digits(int page_number);
-char *create_lock_file(char *img_path);
-void delete_lock_file(char *file_look_path);
 
 void render_thumbnail(const char *pdf_file_path, const char *images_folder_path,
                       const int page_number, const int zoom,
@@ -53,9 +50,12 @@ char *create_lock_file(char *image_path) {
 
     sprintf(lock_file_path, "%s%s", image_path, extension);
 
+    errno = 0;
     FILE *lock_file = fopen(lock_file_path, "a+");
-    if (lock_file == NULL)
+    if (lock_file == NULL) {
+        printf("Error %d \n", errno);
         exit(EXIT_FAILURE);
+    }
 
     fprintf(lock_file, "Created");
 

@@ -1,3 +1,4 @@
+include_directories(${CMAKE_SOURCE_DIR}/include)
 if(WIN32)
     link_directories(${CMAKE_SOURCE_DIR}/lib/win)
 elseif(APPLE)
@@ -15,7 +16,6 @@ target_sources(${ARTIFACT_NAME} PRIVATE
     mupdf_render.h
 )
 
-target_include_directories(${ARTIFACT_NAME} PRIVATE ../include)
 target_link_libraries(${ARTIFACT_NAME} PRIVATE freetype jbig2dec jpeg mupdf openjpeg z)
 
 

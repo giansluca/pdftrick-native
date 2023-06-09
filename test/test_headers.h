@@ -1,4 +1,3 @@
 #include <check.h>
 
-Suite *render_suite(void);
-Suite *functions_suite(void);
+Suite *page_render_suite(void);

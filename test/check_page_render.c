@@ -52,7 +52,12 @@ START_TEST(it_should_create_lock_file) {
 END_TEST
 
 START_TEST(it_should_render_thumbnail) {
-    char *pdf_file_path = "test/resources/basic-1.pdf";
+    struct stat stats;
+    if (stat("test/out-files", &stats) == -1) {
+        mkdir("test/out-files", 0700);
+    }
+
+    char *pdf_file_path = "../../test/resources/basic-1.pdf";
     char *images_folder_path = "test/out-files/";
     int page_number = 99;
     int zoom = 30;
@@ -72,13 +77,13 @@ Suite *page_render_suite(void) {
     Suite *suite;
     TCase *tcase;
 
-    suite = suite_create("Functions suite");
-    tcase = tcase_create("Functions test case");
+    suite = suite_create("Page render suite");
+    tcase = tcase_create("Page render test case");
 
     tcase_add_test(tcase, it_should_calculate_digits_of_a_number);
     tcase_add_test(tcase, it_should_build_image_path);
     tcase_add_test(tcase, it_should_create_lock_file);
-    // tcase_add_test(tcase, it_should_render_thumbnail);
+    tcase_add_test(tcase, it_should_render_thumbnail);
 
     suite_add_tcase(suite, tcase);
 

@@ -1,4 +1,4 @@
-#include "test_headers.h"
+#include "common.h"
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>

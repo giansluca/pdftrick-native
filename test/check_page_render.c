@@ -1,4 +1,5 @@
 #include "../src/page_render.h"
+#include "common.h"
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,10 +30,7 @@ START_TEST(it_should_build_image_path) {
 END_TEST
 
 START_TEST(it_should_create_lock_file) {
-    struct stat stats;
-    if (stat("test/resources", &stats) == -1) {
-        mkdir("test/resources", 0700);
-    }
+    make_dir("test/resources");
 
     char *image_path = "test/resources/file.png";
     char *lock_file_path = create_lock_file(image_path);
@@ -52,10 +50,7 @@ START_TEST(it_should_create_lock_file) {
 END_TEST
 
 START_TEST(it_should_render_thumbnail) {
-    struct stat stats;
-    if (stat("test/out-files", &stats) == -1) {
-        mkdir("test/out-files", 0700);
-    }
+    make_dir("test/out-files");
 
     char *pdf_file_path = "../../test/resources/basic-1.pdf";
     char *images_folder_path = "test/out-files/";

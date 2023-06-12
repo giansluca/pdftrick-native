@@ -13,6 +13,7 @@ endif()
 add_executable(run-tests)
 target_sources(run-tests PRIVATE 
     test_runner.c
+    common.c
     common.h
     check_page_render.c
 )

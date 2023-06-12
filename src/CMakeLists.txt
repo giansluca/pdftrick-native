@@ -16,7 +16,7 @@ target_sources(${ARTIFACT_NAME} PRIVATE
     mupdf_render.h
 )
 
-target_link_libraries(${ARTIFACT_NAME} PRIVATE freetype jbig2dec jpeg mupdf openjpeg z)
+target_link_libraries(${ARTIFACT_NAME} PRIVATE mupdf freetype jbig2dec jpeg openjpeg z)
 
 
 

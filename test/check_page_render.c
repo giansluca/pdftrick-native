@@ -30,9 +30,9 @@ START_TEST(it_should_build_image_path) {
 END_TEST
 
 START_TEST(it_should_create_lock_file) {
-    make_dir("test/resources");
+    make_dir("test/out-files");
 
-    char *image_path = "test/resources/file.png";
+    char *image_path = "test/out-files/file.png";
     char *lock_file_path = create_lock_file(image_path);
 
     ck_assert_int_eq(access(lock_file_path, F_OK), 0);

@@ -20,12 +20,6 @@ target_sources(run-tests PRIVATE
 
 target_link_libraries(run-tests PRIVATE
     pdftrick-native_${CMAKE_PROJECT_VERSION}
-    freetype 
-    jbig2dec 
-    jpeg 
-    mupdf 
-    openjpeg 
-    z
     ${CHECK_LIBRARIES} 
 )
 

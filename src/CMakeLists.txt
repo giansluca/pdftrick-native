@@ -6,7 +6,7 @@ elseif(APPLE)
 endif()
 
 set(ARTIFACT_NAME pdftrick-native_${CMAKE_PROJECT_VERSION})
-add_library(${ARTIFACT_NAME} SHARED)
+add_library(${ARTIFACT_NAME} STATIC)
 target_sources(${ARTIFACT_NAME} PRIVATE 
     org_gmdev_pdftrick_nativeutil_NativeLibCall.c
     org_gmdev_pdftrick_nativeutil_NativeLibCall.h

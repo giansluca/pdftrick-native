@@ -4,7 +4,8 @@ on: [push]
 jobs:
   test-mac:
     runs-on: macos-latest
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/develop'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -43,8 +44,8 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/develop'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -68,8 +69,8 @@ jobs:
   release-mac:
     needs: create-release
     runs-on: macos-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/develop'
     env:
       RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
     steps:
@@ -95,8 +96,8 @@ jobs:
   release-windows:
     needs: create-release
     runs-on: windows-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/develop'
     env:
       RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
     defaults:

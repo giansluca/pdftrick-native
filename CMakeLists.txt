@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.18)
 
-execute_process(
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/script/version.sh
-    OUTPUT_VARIABLE PROJECT_VERSION)
+if(WIN32)
+    execute_process(
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/script/version.bat
+        OUTPUT_VARIABLE PROJECT_VERSION)
+elseif(APPLE)
+    execute_process(
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/script/version.sh
+        OUTPUT_VARIABLE PROJECT_VERSION)
+endif()
 
 project(c-utils VERSION ${PROJECT_VERSION} LANGUAGES C)
 

@@ -42,7 +42,8 @@ jobs:
           make test -C build/release
   create-release:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/develop'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

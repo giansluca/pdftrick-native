@@ -9,10 +9,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Setup dev tools
-        run: brew install check
-      - name: Test
-        run: make test
-
+        run: brew install cmake check
+      - name: Build and Test
+        run: |
+          cmake -S . -B build/release -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -Wno-dev
+          cmake --build build/release
+          make test -C build/release
   test-windows:
     runs-on: windows-latest
     if: github.ref == 'refs/heads/develop'
@@ -32,85 +34,88 @@ jobs:
             make
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-check
-      - name: Test
-        run: make test
+            mingw-w64-x86_64-cmake
+      - name: Build and Test
+        run: |
+          cmake -G "Unix Makefiles" -S . -B build/release -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Release -Wno-dev
+          cmake --build build/release
+          make test -C build/release
+  # create-release:
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/master'
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #     - name: Set release version
+  #       id: version
+  #       run: echo "::set-output name=RELEASE_VERSION::$(make version)"
+  #     - name: Create Release
+  #       uses: actions/create-release@v1
+  #       id: release
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         release_name: v${{ steps.version.outputs.RELEASE_VERSION }}
+  #         tag_name: v${{ steps.version.outputs.RELEASE_VERSION }}
+  #         draft: false
+  #         prerelease: false
+  #   outputs:
+  #     upload_url: ${{ steps.release.outputs.upload_url }}
+  #     release_version: ${{ steps.version.outputs.RELEASE_VERSION }}
 
-  create-release:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set release version
-        id: version
-        run: echo "::set-output name=RELEASE_VERSION::$(make version)"
-      - name: Create Release
-        uses: actions/create-release@v1
-        id: release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          release_name: v${{ steps.version.outputs.RELEASE_VERSION }}
-          tag_name: v${{ steps.version.outputs.RELEASE_VERSION }}
-          draft: false
-          prerelease: false
-    outputs:
-      upload_url: ${{ steps.release.outputs.upload_url }}
-      release_version: ${{ steps.version.outputs.RELEASE_VERSION }}
+  # release-mac:
+  #   needs: create-release
+  #   runs-on: macos-latest
+  #   if: github.ref == 'refs/heads/master'
+  #   env:
+  #     RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #     - name: Setup dev tools
+  #       run: brew install check
+  #     - name: Build
+  #       run: make release
+  #     - name: Upload mac artifact
+  #       uses: actions/upload-release-asset@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ github.token }}
+  #       with:
+  #         upload_url: ${{ needs.create-release.outputs.upload_url }}
+  #         asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
+  #         asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
+  #         asset_content_type: application/octet-stream
 
-  release-mac:
-    needs: create-release
-    runs-on: macos-latest
-    if: github.ref == 'refs/heads/master'
-    env:
-      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Setup dev tools
-        run: brew install check
-      - name: Build
-        run: make release
-      - name: Upload mac artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
-          asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
-          asset_content_type: application/octet-stream
-  
-  release-windows:
-    needs: create-release
-    runs-on: windows-latest
-    if: github.ref == 'refs/heads/master'
-    env:
-      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set up Mysys2
-        uses: msys2/setup-msys2@v2
-        with:
-          update: true
-          msystem: MINGW64
-          install: >-
-            pkg-config
-            make
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-check
-      - name: Build
-        run: make release
-      - name: Upload windows artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.dll
-          asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.dll
-          asset_content_type: application/octet-stream
+  # release-windows:
+  #   needs: create-release
+  #   runs-on: windows-latest
+  #   if: github.ref == 'refs/heads/master'
+  #   env:
+  #     RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+  #   defaults:
+  #     run:
+  #       shell: msys2 {0}
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #     - name: Set up Mysys2
+  #       uses: msys2/setup-msys2@v2
+  #       with:
+  #         update: true
+  #         msystem: MINGW64
+  #         install: >-
+  #           pkg-config
+  #           make
+  #           mingw-w64-x86_64-gcc
+  #           mingw-w64-x86_64-check
+  #     - name: Build
+  #       run: make release
+  #     - name: Upload windows artifact
+  #       uses: actions/upload-release-asset@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ github.token }}
+  #       with:
+  #         upload_url: ${{ needs.create-release.outputs.upload_url }}
+  #         asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.dll
+  #         asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.dll
+  #         asset_content_type: application/octet-stream

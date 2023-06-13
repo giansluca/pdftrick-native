@@ -20,7 +20,7 @@
 # location of Check. For example, on Windows, this may be: C:/Program Files/check
 # set(CHECK_INSTALL_DIR "C:/Program Files/check")
 
-
+MESSAGE(STATUS "checking check")
 INCLUDE( FindPkgConfig )
 
 # Take care about check.pc settings

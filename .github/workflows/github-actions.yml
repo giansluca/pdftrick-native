@@ -40,28 +40,28 @@ jobs:
           cmake -G "Unix Makefiles" -S . -B build/release -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Release -Wno-dev
           cmake --build build/release
           make test -C build/release
-  # create-release:
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/master'
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-  #     - name: Set release version
-  #       id: version
-  #       run: echo "::set-output name=RELEASE_VERSION::$(make version)"
-  #     - name: Create Release
-  #       uses: actions/create-release@v1
-  #       id: release
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         release_name: v${{ steps.version.outputs.RELEASE_VERSION }}
-  #         tag_name: v${{ steps.version.outputs.RELEASE_VERSION }}
-  #         draft: false
-  #         prerelease: false
-  #   outputs:
-  #     upload_url: ${{ steps.release.outputs.upload_url }}
-  #     release_version: ${{ steps.version.outputs.RELEASE_VERSION }}
+  create-release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set release version
+        id: version
+        run: echo "::set-output name=RELEASE_VERSION::$(script/version.sh)"
+      - name: Create Release
+        uses: actions/create-release@v1
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: v${{ steps.version.outputs.RELEASE_VERSION }}
+          tag_name: v${{ steps.version.outputs.RELEASE_VERSION }}
+          draft: false
+          prerelease: false
+    outputs:
+      upload_url: ${{ steps.release.outputs.upload_url }}
+      release_version: ${{ steps.version.outputs.RELEASE_VERSION }}
 
   # release-mac:
   #   needs: create-release

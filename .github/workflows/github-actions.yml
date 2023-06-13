@@ -75,17 +75,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Setup dev tools
-        run: brew install check
-      - name: Build
-        run: make release
+        run: brew install cmake check
+      - name: Build and install
+        run: |
+          cmake -S . -B build/release -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -Wno-dev
+          cmake --build build/release
+          cmake --install build/release
       - name: Upload mac artifact
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
-          asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.jnilib
+          asset_path: ./build/install/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
+          asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
           asset_content_type: application/octet-stream
 
   release-windows:
@@ -111,14 +114,17 @@ jobs:
             make
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-check
-      - name: Build
-        run: make release
+      - name: Build and install
+        run: |
+          cmake -G "Unix Makefiles" -S . -B build/release -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Release -Wno-dev
+          cmake --build build/release
+          cmake --install build/release
       - name: Upload windows artifact
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/release/pdftrick-native_${{ env.RELEASE_VERSION }}.dll
-          asset_name: pdftrick-native_${{ env.RELEASE_VERSION }}.dll
+          asset_path: ./build/install/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib.dll
+          asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib.dll
           asset_content_type: application/octet-stream

@@ -26,9 +26,15 @@ set(ARTIFACT_NAME pdftrick-native_${CMAKE_PROJECT_VERSION})
 add_library(${ARTIFACT_NAME} SHARED)
 target_sources(${ARTIFACT_NAME} PRIVATE 
     org_gmdev_pdftrick_nativeutil_NativeLibCall.c
-    org_gmdev_pdftrick_nativeutil_NativeLibCall.h
 )
 target_link_libraries(${ARTIFACT_NAME} PRIVATE pagerender)
+set_target_properties(${ARTIFACT_NAME} PROPERTIES PUBLIC_HEADER org_gmdev_pdftrick_nativeutil_NativeLibCall.h)
+
+install(TARGETS ${ARTIFACT_NAME}
+    RUNTIME DESTINATION ${INSTALL_CURRENT_DIR}/bin
+    LIBRARY DESTINATION ${INSTALL_CURRENT_DIR}/lib
+    ARCHIVE DESTINATION ${INSTALL_CURRENT_DIR}/lib
+    PUBLIC_HEADER DESTINATION ${INSTALL_CURRENT_DIR}/include)
 
 
 

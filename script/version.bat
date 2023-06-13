@@ -1,3 +1,2 @@
-SET @VERSION="1.0.3"
-ECHO %@VERSION%
-PAUSE
+@set @VERSION="1.0.3"
+@echo | set /p=%@VERSION%

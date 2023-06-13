@@ -49,7 +49,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Set release version
         id: version
-        run: echo "::set-output name=RELEASE_VERSION::$(script/version.sh)"
+        #run: echo "::set-output name=RELEASE_VERSION::$(script/version.sh)"
+        run: echo "RELEASE_VERSION=$(script/version.sh)" >> $GITHUB_OUTPUT
       - name: Create Release
         uses: actions/create-release@v1
         id: release
@@ -87,7 +88,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/install/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
+          asset_path: ./build/install/lib/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
           asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
           asset_content_type: application/octet-stream
 
@@ -114,6 +115,7 @@ jobs:
             make
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-check
+            mingw-w64-x86_64-cmake
       - name: Build and install
         run: |
           cmake -G "Unix Makefiles" -S . -B build/release -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Release -Wno-dev
@@ -125,6 +127,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/install/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib.dll
+          asset_path: ./build/install/lib/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib.dll
           asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib.dll
           asset_content_type: application/octet-stream

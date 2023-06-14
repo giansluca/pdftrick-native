@@ -117,7 +117,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          upload_url: ${{ needs.release-action.outputs.upload_url }}
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
           asset_path: ./build/install/lib/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
           asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
           asset_content_type: application/octet-stream

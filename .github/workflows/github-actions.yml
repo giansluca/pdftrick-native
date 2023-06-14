@@ -43,92 +43,111 @@ jobs:
           cmake --build build/release
           make test -C build/release
 
+  # create-release:
+  #   runs-on: ubuntu-latest
+  #   #if: github.ref == 'refs/heads/master'
+  #   if: github.ref == 'refs/heads/develop'
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #     - name: Set release version
+  #       id: version
+  #       run: echo "RELEASE_VERSION=$(script/version.sh)" >> $GITHUB_OUTPUT
+  #     - name: Create Release
+  #       uses: actions/create-release@v1
+  #       id: release
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         release_name: v${{ steps.version.outputs.RELEASE_VERSION }}
+  #         tag_name: v${{ steps.version.outputs.RELEASE_VERSION }}
+  #         draft: false
+  #         prerelease: false
+  #   outputs:
+  #     upload_url: ${{ steps.release.outputs.upload_url }}
+  #     release_version: ${{ steps.version.outputs.RELEASE_VERSION }}
+
   create-release:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/develop'
+    if: startsWith(github.event.ref, 'refs/tags/v')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Set release version
         id: version
         run: echo "RELEASE_VERSION=$(script/version.sh)" >> $GITHUB_OUTPUT
-      - name: Create Release
-        uses: actions/create-release@v3
-        id: release
+      - name: Create release
+        uses: ncipollo/release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          release_name: v${{ steps.version.outputs.RELEASE_VERSION }}
-          tag_name: v${{ steps.version.outputs.RELEASE_VERSION }}
-          draft: false
-          prerelease: false
+          name: v${{ steps.version.outputs.RELEASE_VERSION }}
     outputs:
       upload_url: ${{ steps.release.outputs.upload_url }}
       release_version: ${{ steps.version.outputs.RELEASE_VERSION }}
 
-  release-mac:
-    needs: create-release
-    runs-on: macos-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/develop'
-    env:
-      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Setup dev tools
-        run: brew install cmake check
-      - name: Build and install
-        run: |
-          cmake -S . -B build/release -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -Wno-dev
-          cmake --build build/release
-          cmake --install build/release
-      - name: Upload mac artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/install/lib/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
-          asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
-          asset_content_type: application/octet-stream
+  # release-mac:
+  #   needs: create-release
+  #   runs-on: macos-latest
+  #   #if: github.ref == 'refs/heads/master'
+  #   if: github.ref == 'refs/heads/develop'
+  #   env:
+  #     RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #     - name: Setup dev tools
+  #       run: brew install cmake check
+  #     - name: Build and install
+  #       run: |
+  #         cmake -S . -B build/release -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -Wno-dev
+  #         cmake --build build/release
+  #         cmake --install build/release
+  #     - name: Upload mac artifact
+  #       uses: actions/upload-release-asset@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ github.token }}
+  #       with:
+  #         upload_url: ${{ needs.create-release.outputs.upload_url }}
+  #         asset_path: ./build/install/lib/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
+  #         asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
+  #         asset_content_type: application/octet-stream
 
-  release-windows:
-    needs: create-release
-    runs-on: windows-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/develop'
-    env:
-      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set up Mysys2
-        uses: msys2/setup-msys2@v2
-        with:
-          update: true
-          msystem: MINGW64
-          install: >-
-            pkg-config
-            make
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-check
-            mingw-w64-x86_64-cmake
-      - name: Build and install
-        run: |
-          cmake -G "Unix Makefiles" -S . -B build/release -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Release -Wno-dev
-          cmake --build build/release
-          cmake --install build/release
-      - name: Upload windows artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./build/install/bin/libpdftrick-native_${{ env.RELEASE_VERSION }}.dll
-          asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dll
-          asset_content_type: application/octet-stream
+  # release-windows:
+  #   needs: create-release
+  #   runs-on: windows-latest
+  #   #if: github.ref == 'refs/heads/master'
+  #   if: github.ref == 'refs/heads/develop'
+  #   env:
+  #     RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+  #   defaults:
+  #     run:
+  #       shell: msys2 {0}
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #     - name: Set up Mysys2
+  #       uses: msys2/setup-msys2@v2
+  #       with:
+  #         update: true
+  #         msystem: MINGW64
+  #         install: >-
+  #           pkg-config
+  #           make
+  #           mingw-w64-x86_64-gcc
+  #           mingw-w64-x86_64-check
+  #           mingw-w64-x86_64-cmake
+  #     - name: Build and install
+  #       run: |
+  #         cmake -G "Unix Makefiles" -S . -B build/release -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Release -Wno-dev
+  #         cmake --build build/release
+  #         cmake --install build/release
+  #     - name: Upload windows artifact
+  #       uses: actions/upload-release-asset@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ github.token }}
+  #       with:
+  #         upload_url: ${{ needs.create-release.outputs.upload_url }}
+  #         asset_path: ./build/install/bin/libpdftrick-native_${{ env.RELEASE_VERSION }}.dll
+  #         asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dll
+  #         asset_content_type: application/octet-stream

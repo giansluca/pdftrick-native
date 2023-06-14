@@ -4,8 +4,8 @@ on: [push]
 jobs:
   test-mac:
     runs-on: macos-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/develop'
+    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -18,8 +18,8 @@ jobs:
           make test -C build/release
   test-windows:
     runs-on: windows-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/develop'
+    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     defaults:
       run:
         shell: msys2 {0}
@@ -69,7 +69,9 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.ref, 'refs/tags/v')
+    #if: startsWith(github.event.ref, 'refs/tags/v')
+    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -89,8 +91,8 @@ jobs:
   # release-mac:
   #   needs: create-release
   #   runs-on: macos-latest
-  #   #if: github.ref == 'refs/heads/master'
   #   if: github.ref == 'refs/heads/develop'
+  #   #if: github.ref == 'refs/heads/master'
   #   env:
   #     RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
   #   steps:
@@ -113,41 +115,41 @@ jobs:
   #         asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
   #         asset_content_type: application/octet-stream
 
-  # release-windows:
-  #   needs: create-release
-  #   runs-on: windows-latest
-  #   #if: github.ref == 'refs/heads/master'
-  #   if: github.ref == 'refs/heads/develop'
-  #   env:
-  #     RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
-  #   defaults:
-  #     run:
-  #       shell: msys2 {0}
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-  #     - name: Set up Mysys2
-  #       uses: msys2/setup-msys2@v2
-  #       with:
-  #         update: true
-  #         msystem: MINGW64
-  #         install: >-
-  #           pkg-config
-  #           make
-  #           mingw-w64-x86_64-gcc
-  #           mingw-w64-x86_64-check
-  #           mingw-w64-x86_64-cmake
-  #     - name: Build and install
-  #       run: |
-  #         cmake -G "Unix Makefiles" -S . -B build/release -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Release -Wno-dev
-  #         cmake --build build/release
-  #         cmake --install build/release
-  #     - name: Upload windows artifact
-  #       uses: actions/upload-release-asset@v1
-  #       env:
-  #         GITHUB_TOKEN: ${{ github.token }}
-  #       with:
-  #         upload_url: ${{ needs.create-release.outputs.upload_url }}
-  #         asset_path: ./build/install/bin/libpdftrick-native_${{ env.RELEASE_VERSION }}.dll
-  #         asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dll
-  #         asset_content_type: application/octet-stream
+  release-windows:
+    needs: create-release
+    runs-on: windows-latest
+    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
+    env:
+      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Mysys2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          msystem: MINGW64
+          install: >-
+            pkg-config
+            make
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-check
+            mingw-w64-x86_64-cmake
+      - name: Build and install
+        run: |
+          cmake -G "Unix Makefiles" -S . -B build/release -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Release -Wno-dev
+          cmake --build build/release
+          cmake --install build/release
+      - name: Upload windows artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./build/install/bin/libpdftrick-native_${{ env.RELEASE_VERSION }}.dll
+          asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dll
+          asset_content_type: application/octet-stream

@@ -48,6 +48,7 @@ jobs:
           make test -C build/release
 
   create-release:
+    needs: [test-mac, test-windows]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     #if: github.ref == 'refs/heads/master'

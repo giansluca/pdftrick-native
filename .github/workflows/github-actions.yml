@@ -101,7 +101,7 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     #if: github.ref == 'refs/heads/master'
     env:
-      RELEASE_VERSION: ${{ needs.release-action.outputs.release_version }}
+      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

@@ -8,8 +8,8 @@ on:
 jobs:
   test-mac:
     runs-on: macos-latest
-    #if: github.ref == 'refs/heads/develop'
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/develop'
+    #if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -22,8 +22,8 @@ jobs:
           make test -C build/release
   test-windows:
     runs-on: windows-latest
-    #if: github.ref == 'refs/heads/develop'
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/develop'
+    #if: github.ref == 'refs/heads/master'
     defaults:
       run:
         shell: msys2 {0}
@@ -87,15 +87,6 @@ jobs:
           cmake --build build/release
           cmake --install build/release
       - name: Upload mac artifact
-        # uses: actions/upload-release-asset@v1
-        # env:
-        #  GITHUB_TOKEN: ${{ github.token }}
-        # with:
-        #   upload_url: ${{ needs.create-release.outputs.upload_url }}
-        #   asset_path: ./build/install/lib/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
-        #   asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
-        #   asset_content_type: application/octet-stream
-
         uses: shogo82148/actions-upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -134,11 +125,10 @@ jobs:
           cmake --build build/release
           cmake --install build/release
       - name: Upload windows artifact
-        uses: actions/upload-release-asset@v1
+        uses: shogo82148/actions-upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
           asset_path: ./build/install/bin/libpdftrick-native_${{ env.RELEASE_VERSION }}.dll
           asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dll
-          asset_content_type: application/octet-stream

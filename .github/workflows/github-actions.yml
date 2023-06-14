@@ -100,7 +100,7 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     #if: github.ref == 'refs/heads/master'
     env:
-      RELEASE_VERSION: ${{ needs.create-release.outputs.release_version }}
+      RELEASE_VERSION: ${{ needs.release-action.outputs.release_version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -116,7 +116,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          upload_url: ${{ needs.release-action.outputs.upload_url }}
           asset_path: ./build/install/lib/libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
           asset_name: libpdftrick-native_${{ env.RELEASE_VERSION }}.dylib
           asset_content_type: application/octet-stream

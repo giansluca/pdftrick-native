@@ -1,1 +1,1 @@
-Native library written in c language used by pdftrick for rendering pdf covers
+Native library written in c language used by pdftrick for rendering pdf covers.

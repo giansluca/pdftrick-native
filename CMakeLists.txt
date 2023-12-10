@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.28)
 
 project(c-utils VERSION "1.0.3" LANGUAGES C)
 

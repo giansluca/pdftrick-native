@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-set(PROJECT_VERSION "1.0.3")
-
-project(c-utils VERSION ${PROJECT_VERSION} LANGUAGES C)
+project(c-utils VERSION "1.0.3" LANGUAGES C)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
